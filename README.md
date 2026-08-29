@@ -34,7 +34,9 @@ https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-conf
 | `multi.json` | 多仓聚合入口（第三方线路） |
 | `live.m3u` | 自选直播频道（本地维护，自动失效检测） |
 | `upstream/tel.m3u` | 「电信精选(官方台)」直播列表（`build_tel.py` 生成） |
+| `upstream/all.m3u` | 全量聚合直播列表（`build_all.py` 生成，6 组合并） |
 | `scripts/build_tel.py` | 从上游 m3u 筛选电信/联通可用的官方 CDN 源，生成 `tel.m3u` |
+| `scripts/build_all.py` | 把 6 组直播合并成 `all.m3u`（带分组前缀） |
 | `scripts/check_sources.py` | 失效线路自动检测/剔除 |
 | `scripts/encrypt_config.py` | 配置 Base64 / AES-128-ECB 加密 |
 | `.github/workflows/update-config.yml` | 每天定时自检 + 同步上游直播源 |
@@ -54,6 +56,12 @@ https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-conf
 | 国内频道 | iptv-org `cn.m3u` | 公共源，含大量境外 IP / geo-blocked / 过期源，**需代理或挑着看** |
 | 香港频道 | iptv-org `hk.m3u` | 香港频道，geo-blocked，**需香港 IP/代理** |
 | 本地直播(我的) | `live.m3u` | 自选频道 |
+
+**一个地址全包**：聚合列表 `upstream/all.m3u` 把上面 6 组合并（每组带前缀，`电信精选·` 开头的是电信可看的）：
+
+```text
+https://gh-proxy.com/raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/upstream/all.m3u
+```
 
 **电信/联通宽带**：直接用「电信精选(官方台)」这组即可，其余组基本放不动（移动专线 / 境外 geo-blocked）。
 
