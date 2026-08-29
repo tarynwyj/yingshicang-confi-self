@@ -42,15 +42,10 @@
     {
       "name": "央视卫视(IPv4)",
       "type": 0,
-      "url": "https://live.fanmingming.com/tv/m3u/ipv4.m3u"
+      "url": "https://live.fanmingming.com/tv/m3u/itv.m3u"
     },
     {
-      "name": "国际频道(IPTV-Org全量)",
-      "type": 0,
-      "url": "https://iptv-org.github.io/iptv/index.m3u"
-    },
-    {
-      "name": "中国大陆频道(IPTV-Org)",
+      "name": "国内频道(IPTV-Org)",
       "type": 0,
       "url": "https://iptv-org.github.io/iptv/countries/cn.m3u"
     },
