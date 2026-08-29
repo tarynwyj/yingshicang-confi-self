@@ -25,6 +25,9 @@ SOURCES = [
     (os.path.join("upstream", "hk.m3u"), "香港·"),
 ]
 
+# 已知坏死源（私有分片格式/超时），合并时剔除
+DENY = ["qtv.com.cn", "gztv.com", "juyun.tv", "xykt-fix.github.io/Y77"]
+
 HEADER = '#EXTM3U x-tvg-url="https://live.fanmingming.com/e.xml.gz"'
 
 
@@ -49,6 +52,8 @@ def main():
             if line.startswith("#EXTINF") and i + 1 < len(lines):
                 url = lines[i + 1]
                 if not url.startswith("http"):
+                    continue
+                if any(d in url for d in DENY):  # 剔除坏死源
                     continue
                 if url in seen:  # 跨文件去重
                     continue

@@ -29,19 +29,18 @@ ALLOWED = [
     ("hebtv.com", "卫视频道"),
     ("mgtv.com", "卫视频道"),
     ("wcetv.com", "卫视频道"),
-    ("gztv.com", "地方频道"),
     ("hrbtv.net", "地方频道"),
     ("lzr.com.cn", "地方频道"),
     ("jilintv.cn", "吉林频道"),
     ("jlntv.cn", "吉林频道"),
-    ("qtv.com.cn", "青岛频道"),
     ("kankanlive.com", "其他频道"),
-    ("juyun.tv", "其他频道"),
     ("bread-tv.com", "其他频道"),
 ]
 
-# 已知失效/过期源，host 命中白名单也要剔除
-DENY = ["livestream-bt.nmtv.cn"]
+# 已知失效/过期/私有格式源，host 命中白名单也要剔除
+#   livestream-bt.nmtv.cn = 内蒙 txSecret 过期
+#   qtv.com.cn / gztv.com / juyun.tv 已移出白名单（分片私有格式或超时）
+DENY = ["livestream-bt.nmtv.cn", "xykt-fix.github.io/Y77"]
 
 # 频道名归一（英文 -> 中文），提升列表可读性
 NAME_MAP = {
@@ -76,9 +75,10 @@ def host_of(url):
 
 
 def allowed_group(url):
-    h = host_of(url)
-    if any(d in h for d in DENY):
+    # DENY 是 URL 级(可能含路径)，先于 host 白名单检查
+    if any(d in url for d in DENY):
         return None
+    h = host_of(url)
     for kw, grp in ALLOWED:
         if kw in h:
             return grp
