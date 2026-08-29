@@ -1,3 +1,6 @@
 #EXTM3U
-# 这是一个合法的最小直播源模板。
-# 请仅添加你拥有播放权或获授权使用的公开直播流。
+# 自有/获授权频道模板：每个频道由一行 #EXTINF 和下一行播放地址组成。
+# 请勿把账号、密码、Token 或含长期签名参数的私人地址提交到公开仓库。
+
+#EXTINF:-1 group-title="自有频道",频道名称
+#https://example.com/authorized-stream.m3u8
