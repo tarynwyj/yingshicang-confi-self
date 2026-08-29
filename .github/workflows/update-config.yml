@@ -41,6 +41,8 @@ jobs:
           curl -fsSL "https://live.fanmingming.com/tv/m3u/itv.m3u" -o upstream/itv.m3u || true
           curl -fsSL "https://iptv-org.github.io/iptv/countries/cn.m3u" -o upstream/cn.m3u || true
           curl -fsSL "https://iptv-org.github.io/iptv/countries/hk.m3u" -o upstream/hk.m3u || true
+          # 重建“电信精选”官方台列表
+          python3 scripts/build_tel.py || true
 
       # 3) 提交并推送（无改动时跳过）
       - name: Commit and push

@@ -30,6 +30,11 @@
   ],
   "lives": [
     {
+      "name": "电信精选(官方台)",
+      "type": 0,
+      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/upstream/tel.m3u"
+    },
+    {
       "name": "央视卫视(IPv6)",
       "type": 0,
       "url": "https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/upstream/ipv6.m3u"
