@@ -33,6 +33,8 @@ https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-conf
 | `config.json` | 主配置：自有站点 + 直播源列表 |
 | `multi.json` | 多仓聚合入口（第三方线路） |
 | `live.m3u` | 自选直播频道（本地维护，自动失效检测） |
+| `upstream/tel.m3u` | 「电信精选(官方台)」直播列表（`build_tel.py` 生成） |
+| `scripts/build_tel.py` | 从上游 m3u 筛选电信/联通可用的官方 CDN 源，生成 `tel.m3u` |
 | `scripts/check_sources.py` | 失效线路自动检测/剔除 |
 | `scripts/encrypt_config.py` | 配置 Base64 / AES-128-ECB 加密 |
 | `.github/workflows/update-config.yml` | 每天定时自检 + 同步上游直播源 |
@@ -46,15 +48,18 @@ https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-conf
 
 | 分组 | 来源 | 说明 |
 |---|---|---|
-| 央视卫视(IPv6) | fanmingming `ipv6.m3u` | 公网 IPv6 源，跨运营商可看；**需要宽带支持 IPv6**，IPv6 宽带优先用这组 |
+| 电信精选(官方台) | `upstream/tel.m3u`（脚本生成） | **电信/联通宽带推荐**：央视代理 + 卫视/地方台官方 CDN，约 47 个频道，跨运营商可看 |
+| 央视卫视(IPv6) | fanmingming `ipv6.m3u` | **中国移动 IPv6 专线源**（`2409:8087`），电信/联通不通，仅移动宽带 + IPv6 适用 |
 | 央视卫视(IPv4) | fanmingming `itv.m3u` | 中国移动 IPTV 专线源，**电信/联通宽带大概率不通**，仅移动宽带适用 |
-| 国内频道 | iptv-org `cn.m3u` | 跨运营商公共源，143 个频道 |
-| 香港频道 | iptv-org `hk.m3u` | 香港频道 |
+| 国内频道 | iptv-org `cn.m3u` | 公共源，含大量境外 IP / geo-blocked / 过期源，**需代理或挑着看** |
+| 香港频道 | iptv-org `hk.m3u` | 香港频道，geo-blocked，**需香港 IP/代理** |
 | 本地直播(我的) | `live.m3u` | 自选频道 |
 
-`upstream/` 下的 m3u 由 GitHub Actions 每天 11:20 自动同步更新。自选频道放在 `live.m3u`，失效的会被 Actions 自动加 `#[DEAD]` 注释。
+**电信/联通宽带**：直接用「电信精选(官方台)」这组即可，其余组基本放不动（移动专线 / 境外 geo-blocked）。
 
-> 若某组能出列表但播放不了，多为运营商/地域限制——换一组试即可。IPv6 组无法播放请先确认宽带已开通 IPv6（`ipw.cn` 可测）。
+`upstream/` 下的 m3u 由 GitHub Actions 每天 11:20 自动同步更新；`tel.m3u` 由 `scripts/build_tel.py` 按 host 白名单从 `ipv6.m3u` + `cn.m3u` 中筛选官方 CDN / 跨运营商源重建（自动剔除移动专线、境外、需 IPv6、失效 txSecret 等）。自选频道放在 `live.m3u`，失效的会被 Actions 自动加 `#[DEAD]` 注释。
+
+> 若某组能出列表但播放不了，多为运营商/地域限制——换「电信精选」这组试即可。移动宽带用户再考虑 IPv6/IPv4 那两组。
 
 ## 自有资源（Jellyfin / Emby / Alist）
 
