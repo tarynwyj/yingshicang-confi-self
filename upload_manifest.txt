@@ -1,0 +1,44 @@
+# 上传清单 —— 把 outputs 里的最新文件同步到你的 GitHub 仓库
+
+仓库：github.com/tarynwyj/yingshicang-confi-self  分支：main
+
+## 方式一：GitHub 网页上传（最简单，不用命令行）
+
+1. 打开 https://github.com/tarynwyj/yingshicang-confi-self
+2. 点 **Add file → Upload files**
+3. 把下面的文件放到对应位置（可以分 2~3 次上传）：
+   - 根目录（直接拖进来）：
+     - README.md
+     - config.json
+     - multi.json
+     - live.m3u
+     - SOURCES.md
+     - upload_manifest.txt（可选，不需要可不上传）
+   - scripts/ 目录：
+     - scripts/check_sources.py
+     - scripts/encrypt_config.py
+   - .github/workflows/ 目录：
+     - .github/workflows/update-config.yml
+4. 页面下方写 Commit message，例如：`feat: IPTV+多仓+自有资源+自检+加密+Actions(加速版)`
+5. 点 **Commit changes**（如已存在同名文件会自动覆盖）
+
+## 方式二：命令行
+
+```bash
+cd yingshicang-confi-self
+# 用 outputs 里的文件覆盖/新增（上面列的那 8 个文件）
+git add -A
+git commit -m "feat: IPTV+多仓+自有资源+自检+加密+Actions(加速版)"
+git push
+```
+
+## 传完后，影视仓导入（用加速地址）
+
+主配置：
+```
+https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/config.json
+```
+多仓：
+```
+https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi.json
+```

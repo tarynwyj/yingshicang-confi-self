@@ -1,5 +1,4 @@
 {
-  "spider": "",
   "sites": [
     {
       "key": "alist",
@@ -33,7 +32,7 @@
     {
       "name": "本地直播(我的)",
       "type": 0,
-      "url": "https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/live.m3u"
+      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/live.m3u"
     },
     {
       "name": "央视卫视(IPv6)",

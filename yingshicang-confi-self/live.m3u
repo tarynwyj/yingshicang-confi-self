@@ -1,3 +1,29 @@
-#EXTM3U
-# 这是一个合法的最小直播源模板。
-# 请仅添加你拥有播放权或获授权使用的公开直播流。
+#EXTM3U x-tvg-url="https://live.fanmingming.cn/e.xml" catchup="append" catchup-source="?playseek=${(b)yyyyMMddHHmmss}-${(e)yyyyMMddHHmmss}"
+# 说明：本文件是你的“自选频道”。下面只是示例，请在确认可播放/有权使用后保留。
+# 全量央视/卫视请直接用 config.json 里的远程列表(ipv6/ipv4)，本文件只放自己需要的少数频道。
+# 提示：标注 [IPv6] 的源需要你的宽带支持 IPv6；失效的频道会被 GitHub Actions 自动检测并注释。
+
+#EXTINF:-1 tvg-name="CCTV1" tvg-logo="https://live.fanmingming.cn/tv/CCTV1.png" group-title="央视",CCTV-1综合[IPv6]
+http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226895/1.m3u8?
+
+#EXTINF:-1 tvg-name="CCTV13" tvg-logo="https://live.fanmingming.cn/tv/CCTV13.png" group-title="央视",CCTV-13新闻[IPv6]
+http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226316/1.m3u8?
+
+#EXTINF:-1 tvg-name="CGTN" tvg-logo="https://live.fanmingming.cn/tv/CGTN.png" group-title="央视",CGTN英语
+https://0472.org/hls/cgtn.m3u8
+
+#EXTINF:-1 tvg-name="浙江新闻" tvg-logo="https://live.fanmingming.cn/tv/浙江新闻.png" group-title="浙江频道",浙江新闻
+https://ali-m-l.cztv.com/channels/lantian/channel007/1080p.m3u8
+
+#EXTINF:-1 tvg-name="浙江经济生活" tvg-logo="https://live.fanmingming.cn/tv/浙江经济生活.png" group-title="浙江频道",浙江经济
+https://ali-m-l.cztv.com/channels/lantian/channel003/1080p.m3u8
+
+#EXTINF:-1 tvg-name="内蒙古新闻综合" tvg-logo="https://live.fanmingming.cn/tv/内蒙古新闻综合.png" group-title="内蒙频道",内蒙新闻
+https://livestream-bt.nmtv.cn/nmtv/2316general.m3u8?txSecret=b4373417a82ed64e52b0982a66da8df2&txTime=771E8800
+
+#EXTINF:-1 tvg-name="内蒙古经济生活" tvg-logo="https://live.fanmingming.cn/tv/内蒙古经济生活.png" group-title="内蒙频道",内蒙经济
+https://livestream-bt.nmtv.cn/nmtv/2317general.m3u8?txSecret=112b2c4c872de52b0f37aff6ead63ef0&txTime=771E8800
+
+# 添加你自己的频道：把下面两行取消注释并替换成你有权使用的地址
+#EXTINF:-1 group-title="自有频道",频道名称
+#https://example.com/your-stream.m3u8

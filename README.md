@@ -4,17 +4,27 @@
 
 ## 快速使用
 
-在影视仓中导入主配置地址：
+在影视仓中导入主配置地址（**国内网络优先用带加速前缀的，`raw.githubusercontent.com` 直连经常超时**）：
 
 ```text
+# 国内推荐（gh-proxy 加速）
+https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/config.json
+https://ghproxy.net/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/config.json
+
+# CDN（有缓存，改文件后约 5 分钟才更新）
+https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/config.json
+
+# 国外/有代理时
 https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/config.json
 ```
 
 在影视仓 **设置 → 多仓/仓库管理** 中导入多仓地址（一键接入社区常用线路）：
 
 ```text
-https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi.json
+https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi.json
 ```
+
+> 如果导入后配置里显示站点/直播为空，先到影视仓 App 设置里看能否访问外网（如换 Wi-Fi/开代理再试）。`config.json` 内部的直播列表也全部用的是加速地址，不会依赖 `raw.githubusercontent.com`。
 
 > 导入多仓后，App 会加载 `multi.json` 里列出的第三方线路（肥猫、饭太硬、欧歌、高天流云等）。这些是社区公共源，**不稳定、可能含未授权内容，请自行判断使用**。推荐优先用 `scripts/` 里的工具私有化后再用。
 
