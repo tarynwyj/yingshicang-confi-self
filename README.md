@@ -26,8 +26,6 @@ https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-conf
 
 > 如果导入后配置里显示站点/直播为空，先到影视仓 App 设置里看能否访问外网（如换 Wi-Fi/开代理再试）。`config.json` 内部的直播列表也全部用的是加速地址，不会依赖 `raw.githubusercontent.com`。
 
-> 导入多仓后，App 会加载 `multi.json` 里列出的第三方线路（肥猫、饭太硬、欧歌、高天流云等）。这些是社区公共源，**不稳定、可能含未授权内容，请自行判断使用**。推荐优先用 `scripts/` 里的工具私有化后再用。
-
 ## 文件结构
 
 | 文件 | 说明 |
