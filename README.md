@@ -24,7 +24,7 @@ https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/config.js
 https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi.json
 ```
 
-> 如果导入后配置里显示站点/直播为空，先到影视仓 App 设置里看能否访问外网（如换 Wi-Fi/开代理再试）。`config.json` 内部的直播列表也全部用的是加速地址，不会依赖 `raw.githubusercontent.com`。
+> 如果导入后配置里显示站点/直播为空，先到影视仓 App 设置里看能否访问外网（如换 Wi-Fi/开代理再试）。`config.json` 内部的直播列表缓存在本仓库 `upstream/`，全部走 gh-proxy 加速，不依赖 `raw.githubusercontent.com` 直连。
 
 ## 文件结构
 
@@ -36,22 +36,25 @@ https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-conf
 | `scripts/check_sources.py` | 失效线路自动检测/剔除 |
 | `scripts/encrypt_config.py` | 配置 Base64 / AES-128-ECB 加密 |
 | `.github/workflows/update-config.yml` | 每天定时自检 + 同步上游直播源 |
-| `upstream/` | 自动同步的上游直播列表副本 |
+| `upstream/` | 缓存的直播源列表（GitHub Actions 每天自动同步） |
 
 ## 直播源（IPTV / M3U）
 
-`config.json` 的 `lives` 已内置以下远程列表（均自动维护，无需手动更新）：
+直播列表**缓存在本仓库 `upstream/` 目录**，`config.json` 的 `lives` 全部通过 gh-proxy 加载（与主配置同一加速通道），避免电视端直连上游域名（fanmingming / iptv-org）超时失败。
 
-- 央视/卫视 IPv6：`https://live.fanmingming.com/tv/m3u/ipv6.m3u`
-- 央视/卫视 IPv4：`https://live.fanmingming.com/tv/m3u/ipv4.m3u`
-- 国际频道全量：`https://iptv-org.github.io/iptv/index.m3u`
-- 中国大陆频道：`https://iptv-org.github.io/iptv/countries/cn.m3u`
-- 香港频道：`https://iptv-org.github.io/iptv/countries/hk.m3u`
+当前直播分组（按优先级）：
 
-自选频道放在 `live.m3u`。注意：
+| 分组 | 来源 | 说明 |
+|---|---|---|
+| 央视卫视(IPv6) | fanmingming `ipv6.m3u` | 公网 IPv6 源，跨运营商可看；**需要宽带支持 IPv6**，IPv6 宽带优先用这组 |
+| 央视卫视(IPv4) | fanmingming `itv.m3u` | 中国移动 IPTV 专线源，**电信/联通宽带大概率不通**，仅移动宽带适用 |
+| 国内频道 | iptv-org `cn.m3u` | 跨运营商公共源，143 个频道 |
+| 香港频道 | iptv-org `hk.m3u` | 香港频道 |
+| 本地直播(我的) | `live.m3u` | 自选频道 |
 
-- fanmingming 的央视/卫视多为 **IPv6 源**，需要宽带支持 IPv6（`ipw.cn` 可测）。
-- `live.m3u` 内的频道会被 Actions 每天检测，失效的自动加 `#[DEAD]` 注释。
+`upstream/` 下的 m3u 由 GitHub Actions 每天 11:20 自动同步更新。自选频道放在 `live.m3u`，失效的会被 Actions 自动加 `#[DEAD]` 注释。
+
+> 若某组能出列表但播放不了，多为运营商/地域限制——换一组试即可。IPv6 组无法播放请先确认宽带已开通 IPv6（`ipw.cn` 可测）。
 
 ## 自有资源（Jellyfin / Emby / Alist）
 
