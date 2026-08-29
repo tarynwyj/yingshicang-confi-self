@@ -23,10 +23,24 @@ import os
 import shutil
 import sys
 import urllib.request
+from urllib.parse import urlsplit, urlunsplit
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 TIMEOUT = 10
+
+
+def _normalize_host(url: str) -> str:
+    """把中文域名转成 punycode，避免 urllib 报 UnicodeEncodeError。"""
+    parts = urlsplit(url)
+    host = parts.hostname or ""
+    try:
+        host.encode("ascii")
+        return url
+    except UnicodeEncodeError:
+        host = host.encode("idna").decode()
+        netloc = f"{host}:{parts.port}" if parts.port else host
+        return urlunsplit((parts.scheme, netloc, parts.path, parts.query, parts.fragment))
 
 
 def fetch_ok(url: str) -> tuple[bool, str]:
@@ -36,6 +50,13 @@ def fetch_ok(url: str) -> tuple[bool, str]:
         return True, "skip"
     if url.startswith("data:") or url.startswith("file:"):
         return True, "local"
+    host = urlsplit(url).hostname
+    # 本地/内网占位站点(如自有 Emby/Alist)视为跳过，不算失效
+    if host in ("127.0.0.1", "localhost", "::1") or (host and (
+            host.startswith("192.168.") or host.startswith("10.")
+            or host.startswith("172.") or host.startswith("169.254."))):
+        return True, "local"
+    url = _normalize_host(url)
     req = urllib.request.Request(
         url, headers={"User-Agent": UA, "Accept": "*/*", "Connection": "close"}
     )
