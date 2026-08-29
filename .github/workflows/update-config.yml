@@ -1,0 +1,55 @@
+name: update-config
+
+# 定时更新影视仓配置：
+#   1) 检测 config.json / multi.json / live.m3u 中的失效线路并注释/剔除
+#   2) 同步一份上游直播源列表到 upstream/ 目录（fanmingming、iptv-org）
+#   3) 有变动则自动 commit + push
+#
+# 需要：仓库 Settings -> Actions -> General -> Workflow permissions 设为
+#       "Read and write permissions"（默认即可）。
+
+on:
+  schedule:
+    # 每天 03:20 UTC = 北京时间 11:20
+    - cron: "20 3 * * *"
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  check-and-update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # 1) 检测并剔除失效线路（会备份为 .bak）
+      - name: Check dead sources
+        run: |
+          python3 scripts/check_sources.py --fix || true
+
+      # 2) 同步上游直播列表（仅供自用，放在 upstream/，不直接进 live.m3u）
+      - name: Sync upstream playlists
+        run: |
+          mkdir -p upstream
+          curl -fsSL "https://live.fanmingming.com/tv/m3u/ipv6.m3u" -o upstream/ipv6.m3u || true
+          curl -fsSL "https://live.fanmingming.com/tv/m3u/itv.m3u" -o upstream/itv.m3u || true
+          curl -fsSL "https://iptv-org.github.io/iptv/countries/cn.m3u" -o upstream/cn.m3u || true
+
+      # 3) 提交并推送（无改动时跳过）
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "无变更，跳过提交"
+          else
+            git commit -m "chore: auto update config & sources ($(date +'%Y-%m-%d %H:%M %Z'))"
+            git push
+          fi
