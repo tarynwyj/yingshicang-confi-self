@@ -26,4 +26,4 @@ https://livestream-bt.nmtv.cn/nmtv/2317general.m3u8?txSecret=112b2c4c872de52b0f3
 
 # 添加你自己的频道：把下面两行取消注释并替换成你有权使用的地址
 #EXTINF:-1 group-title="自有频道",频道名称
-#[DEAD] #[DEAD] #[DEAD] #[DEAD] #https://example.com/your-stream.m3u8
+#[DEAD] #[DEAD] #[DEAD] #[DEAD] #[DEAD] #https://example.com/your-stream.m3u8
