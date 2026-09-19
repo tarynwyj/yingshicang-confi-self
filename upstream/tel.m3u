@@ -1,4 +1,6 @@
 #EXTM3U x-tvg-url="https://live.fanmingming.com/e.xml.gz"
+#EXTINF:-1 tvg-name="Zhejiang International Channel" tvg-logo="https://i.imgur.com/XOL1Hph.png" group-title="浙江频道",Zhejiang International Channel
+https://ali-m-l.cztv.com/channels/lantian/channel10/1080p.m3u8
 #EXTINF:-1 tvg-name="之江纪录" tvg-logo="https://live.fanmingming.cn/tv/之江纪录.png" group-title="浙江频道",之江纪录
 https://ali-m-l.cztv.com/channels/lantian/channel012/1080p.m3u8
 #EXTINF:-1 tvg-name="浙江国际" tvg-logo="https://live.fanmingming.cn/tv/浙江国际.png" group-title="浙江频道",浙江国际
@@ -55,6 +57,8 @@ https://liveplus.lzr.com.cn/xwzh/HD/live.m3u8
 https://stream.hrbtv.net/yspd/playlist.m3u8
 #EXTINF:-1 tvg-name="哈尔滨新闻综合" tvg-logo="https://www.tvchinese.net/uploads/tv/haerbin.jpg" group-title="地方频道",哈尔滨新闻综合
 https://stream.hrbtv.net/xwzh/playlist.m3u8?_upt=ef41dd531755913594
+#EXTINF:-1 tvg-name="Baicheng TV" tvg-logo="https://www.tvchinese.net/uploads/tv/baicheng.jpg" group-title="吉林频道",Baicheng TV
+https://stream2.jlntv.cn/baicheng1/sd/live.m3u8
 #EXTINF:-1 tvg-name="吉林乡村" tvg-logo="https://www.tvchinese.net/uploads/tv/jlxcpd.jpg" group-title="吉林频道",吉林乡村
 https://lsfb.avap.jilintv.cn/zqvk7vpj/channel/3ffc4824dce54b92be185555923ce382/index.m3u8
 #EXTINF:-1 tvg-name="吉林生活" tvg-logo="https://www.tvchinese.net/uploads/tv/jlshpd.jpg" group-title="吉林频道",吉林生活
@@ -65,11 +69,9 @@ https://lsfb.avap.jilintv.cn/zqvk7vpj/channel/906341e6f19b4c4bacdc89941eb85d12/i
 https://lsfb.avap.jilintv.cn/zqvk7vpj/channel/7e8474e6daea44ccaa5aa2300191439e/index.m3u8
 #EXTINF:-1 tvg-name="四平电视台" tvg-logo="https://www.tvchinese.net/uploads/tv/sptv1.jpg" group-title="吉林频道",四平电视台
 http://stream2.jlntv.cn/sptv/sd/live.m3u8?_upt=f27750421743154598
-#EXTINF:-1 tvg-name="白城新闻综合" tvg-logo="https://www.tvchinese.net/uploads/tv/baicheng.jpg" group-title="吉林频道",白城新闻综合
-https://stream2.jlntv.cn/baicheng1/sd/live.m3u8
 #EXTINF:-1 tvg-name="通化电视台" tvg-logo="https://www.tvchinese.net/uploads/tv/thtv1.jpg" group-title="吉林频道",通化电视台
 http://lsfb.avap.jilintv.cn/zqvk7vpj/channel/43ea5771aa44421591f9dfd2b71f1b9b/index.m3u8
 #EXTINF:-1 tvg-name="Ando TV" tvg-logo="https://i.imgur.com/EpTsFVu.png" group-title="其他频道",Ando TV
 http://play.kankanlive.com/live/1711956137852982.m3u8
-#EXTINF:-1 tvg-name="Bread TV面包台" tvg-logo="https://bread-tv.com/uploads/allimg/241202/9_1836542371.png" group-title="其他频道",Bread TV面包台
+#EXTINF:-1 tvg-name="Bread TV" tvg-logo="https://bread-tv.com/uploads/allimg/241202/9_1836542371.png" group-title="其他频道",Bread TV
 https://video.bread-tv.com:8091/hls-live24/online/index.m3u8
