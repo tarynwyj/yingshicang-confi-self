@@ -1,10 +1,6 @@
 {
   "urls": [
     {
-      "url": "http://fty.xxooo.cf/tv",
-      "name": "饭太硬"
-    },
-    {
       "url": "https://gh-proxy.com/raw.githubusercontent.com/gaotianliuyun/gao/master/js.json",
       "name": "高天流云-js"
     },
