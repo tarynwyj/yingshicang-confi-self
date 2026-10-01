@@ -1,0 +1,12 @@
+{
+  "sites": [],
+  "lives": [
+    {
+      "name": "HLS 连接测试",
+      "type": 0,
+      "url": "https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/live.m3u"
+    }
+  ],
+  "parses": [],
+  "flags": []
+}
