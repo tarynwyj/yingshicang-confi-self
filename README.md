@@ -10,10 +10,10 @@
 https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi-vod.json
 ```
 
-CDN 备用地址：
+代理备用地址（本轮已读取到新清单）：
 
 ```text
-https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/multi-vod.json
+https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi-vod.json
 ```
 
 本次加入 Qist 自用点播、饭太硬（Qist维护）、潇洒（Qist维护）、高天流云 PG、高天流云 FTY、Gaoops点播。测试范围为配置下载、点播站点结构、扩展地址及文件头；实际搜索和播放待设备验证。证据见 [2026-10-01 来源检查](source-checks/2026-10-01-vod.json)。
@@ -24,10 +24,10 @@ https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/multi-vod.json
 https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi.json
 ```
 
-同一份多仓的 CDN 备用地址：
+同一份完整多仓的代理备用地址：
 
 ```text
-https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/multi.json
+https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi.json
 ```
 
 找到你的影视仓版本中支持“多仓/仓库管理”的入口导入，再选择具体仓库。不同版本菜单不同，不能保证普通配置输入框支持多仓。进入“我的直播配置（无点播）”只会得到直播列表，不会自动出现电影电视剧站点。其他历史条目均保留，不因检测失败删除。
