@@ -1,8 +1,8 @@
 {
   "urls": [
     {
-      "url": "http://肥猫.net/tv",
-      "name": "肥猫"
+      "url": "https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/config.json",
+      "name": "我的主配置"
     },
     {
       "url": "https://gh-proxy.com/raw.githubusercontent.com/gaotianliuyun/gao/master/js.json",
@@ -27,6 +27,10 @@
     {
       "url": "https://gh-proxy.com/raw.githubusercontent.com/gaotianliuyun/gao/master/0827.json",
       "name": "FongMi线路"
+    },
+    {
+      "url": "http://肥猫.net/tv",
+      "name": "肥猫"
     }
   ]
 }
