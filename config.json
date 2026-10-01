@@ -2,7 +2,7 @@
   "sites": [],
   "lives": [
     {
-      "name": "电信精选(官方台)",
+      "name": "域名精选（未保证运营商可用）",
       "type": 0,
       "url": "https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/upstream/tel.m3u"
     },
@@ -27,7 +27,7 @@
       "url": "https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/upstream/hk.m3u"
     },
     {
-      "name": "本地直播(我的)",
+      "name": "自有及连接测试",
       "type": 0,
       "url": "https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/live.m3u"
     }

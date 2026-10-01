@@ -1,68 +1,33 @@
-# 源清单（SOURCES）
+# 来源与验证边界
 
-> 检索时间：2026-08-29。社区源变动很快，**不保证长期有效**，建议配合 `scripts/check_sources.py` 定期自检。
-> 标注 ✅ = 本次已抓取验证可访问；⚠️ = 社区广泛使用但未逐一验证；🚫 = 需自行判断合规。
+本文件说明地址的来源，不认证第三方内容、授权或播放可用性。历史“✅可访问”不能当作当前状态；以带时间的 Actions 报告及设备实测为准。
 
-## 1. IPTV / M3U 直播源
+## 自动同步的原有直播列表
 
-| 源 | 地址 | 状态 | 说明 |
-|---|---|---|---|
-| fanmingming/live IPv6 | `https://live.fanmingming.com/tv/m3u/ipv6.m3u` | ✅ | 央视/卫视/地方台，需 IPv6，附带台标+EPG |
-| fanmingming/live IPv4 | `https://live.fanmingming.com/tv/m3u/ipv4.m3u` | ✅ | 同上，IPv4 |
-| iptv-org 全量 | `https://iptv-org.github.io/iptv/index.m3u` | ✅ | 全球公开频道（GitHub: iptv-org/iptv） |
-| iptv-org 中国大陆 | `https://iptv-org.github.io/iptv/countries/cn.m3u` | ✅ | 国内频道 |
-| iptv-org 香港 | `https://iptv-org.github.io/iptv/countries/hk.m3u` | ✅ | 香港频道 |
-| HerbertHe/iptv-sources | `https://github.com/HerbertHe/iptv-sources` | ⚠️ | 自动聚合脚本项目 |
-| ssili126/tv | `https://github.com/ssili126/tv` | ⚠️ | 国内直播源合集 |
+| 保存文件 | 上游 |
+|---|---|
+| upstream/ipv6.m3u | https://live.fanmingming.com/tv/m3u/ipv6.m3u |
+| upstream/itv.m3u | https://live.fanmingming.com/tv/m3u/itv.m3u |
+| upstream/cn.m3u | https://iptv-org.github.io/iptv/countries/cn.m3u |
+| upstream/hk.m3u | https://iptv-org.github.io/iptv/countries/hk.m3u |
 
-## 2. Jellyfin / Emby / Alist（自有资源）
+程序读取的唯一同步清单是 `scripts/upstreams.json`。旧说明中的 `ipv4.m3u` 不对应原工作流使用的 `itv.m3u`，已纠正。同步失败保留旧文件，上游缺失频道保留为历史条目，不自动删除。
 
-| 项目 | 地址 | 说明 |
-|---|---|---|
-| alist-tvbox | <https://github.com/ygyzy/alist-tvbox> | Alist 转 TVBox 代理，`type:1, api:http://IP:5678/vod` |
-| 小雅 xiaoya-tvbox | <https://github.com/haroldli/xiaoya-tvbox> | Alist+Emby 全家桶（Docker） |
-| Emby/Jellyfin 本体 | 自建 | 影视仓 App 内置“我的→添加服务器”直接接入，无需改 JSON |
+`tel.m3u` 为域名筛选视图，不证明来源官方、授权或运营商兼容；`all.m3u` 聚合所有列表并保留不同播放参数。两者都是生成文件，手工频道应添加到 `live.m3u`。
 
-## 3. 多仓入口
+## 多仓
 
-| 入口 | 地址 | 说明 |
-|---|---|---|
-| 本仓库多仓 | `https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi.json` | 已收录肥猫/饭太硬/欧歌/高天流云/香雅情/南风等公共线路 |
-| noimank/tvbox | <https://github.com/noimank/tvbox> | 影视仓多仓源分享（gitlab + gh-proxy 双地址） |
-| fish2018/tvbox 私有化工具 | <https://github.com/fish2018/tvbox> | Docker 一键把多仓去重/去失效线路后私有化到自己的 GitHub |
+`multi.json` 保留历史 11 个入口（包括自有直播配置）。地址保持原样，仅把自有配置的固定旧提交链接改回主分支，并明确“无点播”。不根据一次检测删除或替换第三方域名，也不自动下载扩展。
 
-社区多仓中常见的线路名（这些只是名称，实际地址都在各多仓 JSON 内）：肥猫、饭太硬、欧歌、游魂、高天流云、香雅情、南风、小盒子、王二小、FongMi。
+截至 2026-10-01 的检查发现：一些入口返回普通 JSON，一些返回非标准内容，另有 DNS 失败、超时和 HTML 页面。状态会变化；JSON 条目数不代表能播放的站点数。实际最新状态请查看每次运行的健康报告。
 
-## 4. Spider / JAR 扩展
+## 自有媒体、JAR、编码
 
-| 项目 | 地址 | 说明 |
-|---|---|---|
-| TVBoxOS（官方） | <https://github.com/q215613905/TVBoxOS> | TVBox 本体源码 |
-| CatVodTVSpider | <https://github.com/liuyunfeng001/CatVodTVSpider1> | 爬虫开发骨架 |
-| FongMi/TV | <https://github.com/FongMi/TV> | FongMi 影视源码 |
-| takagen99/Box | <https://github.com/takagen99/Box> | Box 源码 |
+自有媒体服务器尚缺地址与兼容接口；不存在可用的默认账号或占位服务器。第三方 JAR 不在本仓库存储、运行。Base64/AES 工具是格式实验，不保证影视仓兼容，不用于公开保存凭据。
 
-> 说明：具体某个 jar 是否可用、怎么配，以对应源提供方为准；多仓线路自带的 jar 会在私有化时一并下载。本仓库不内置任何第三方 jar。
+## 检测与自动任务
 
-## 5. 配置加密 / Base64
-
-| 工具 | 地址 | 说明 |
-|---|---|---|
-| 本仓库 encrypt_config.py | `scripts/encrypt_config.py` | Base64 + AES-128-ECB 加密 |
-| @whyun/tv-tools | <https://github.com/whyun-pages/tv-tools> | 解密/解码 TVBox 载荷的 TS 库，验证了“Base64 前缀 + hex 密文 + AES-128-ECB”机制 |
-
-## 6. 自动检测失效线路
-
-| 项目 | 地址 | 说明 |
-|---|---|---|
-| 本仓库 check_sources.py | `scripts/check_sources.py` | 检测 config/multi/live.m3u，可自动注释/剔除失效项 |
-| Guovin/iptv-api | <https://github.com/Guovin/iptv-api> | 直播源自动采集+聚合+测速+过滤，出 M3U/TXT/API |
-| fish2018/tvbox 私有化 | <https://github.com/fish2018/tvbox> | 多仓去重 + 移除失效线路 |
-
-## 7. GitHub Actions 定时更新
-
-| 项目 | 地址 | 说明 |
-|---|---|---|
-| 本仓库 workflow | `.github/workflows/update-config.yml` | 每天自检+同步上游直播源+自动提交 |
-| Guovin/iptv-api 工作流 | 同上 repo 内 | fork 后开启 Actions 即可定时出直播源 |
-| cai3804007/TV | <https://github.com/cai3804007/TV> | 同类自动更新配置示例 |
+`check_sources.py` 只读源文件，只写独立健康报告；没有自动删源模式。
+`sync_sources.py` 下载并验证上游，保护旧列表。
+工作流每天北京时间 11:20 计划执行，重新生成列表并仅提交限定输出文件；报告异常不删除用户来源。
+完整使用说明与缓存、设备验证边界见 README。
