@@ -1,158 +1,84 @@
 #!/usr/bin/env python3
-"""Validate local Yingshicang/TVBox JSON and M3U files.
-
-Network checks are opt-in. The script never rewrites configuration files.
-"""
-
-from __future__ import annotations
-
+"""Read-only structural validation and non-destructive network health reporting."""
 import argparse
-import ipaddress
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timezone
 import json
-import socket
-import sys
-import urllib.error
-import urllib.parse
-import urllib.request
 from pathlib import Path
+from source_utils import classify, config_errors, download, entries, m3u_errors
 
 ROOT = Path(__file__).resolve().parents[1]
-TIMEOUT_SECONDS = 10
-USER_AGENT = "yingshicang-config-validator/1.0"
 
 
-def redact(url: str) -> str:
-    parts = urllib.parse.urlsplit(url)
-    host = parts.hostname or ""
-    port = f":{parts.port}" if parts.port else ""
-    return urllib.parse.urlunsplit((parts.scheme, host + port, parts.path, "", ""))
+def inspect(root):
+    errors, targets = [], []
+    for name in ('config.json', 'config-test.json', 'multi.json'):
+        try:
+            data = json.loads((root / name).read_text(encoding='utf-8-sig'))
+            found = config_errors(data, multi=name == 'multi.json')
+            errors.extend(f'{name}: {e}' for e in found)
+            if found:
+                continue
+            field = 'urls' if name == 'multi.json' else 'lives'
+            for row in data.get(field, []):
+                targets.append((name + ': ' + row['name'], row['url'], 'config' if field == 'urls' else 'playlist'))
+        except (OSError, ValueError, TypeError) as exc:
+            errors.append(f'{name}: {type(exc).__name__}')
+    for path in [root / 'live.m3u', *sorted((root / 'upstream').glob('*.m3u'))]:
+        try:
+            text = path.read_text(encoding='utf-8-sig')
+            errors.extend(f'{path.name}: {e}' for e in m3u_errors(text))
+            for index, (_, _, url) in enumerate(entries(text), 1):
+                targets.append((str(path.relative_to(root)) + f': channel {index}', url, 'media'))
+        except (OSError, ValueError) as exc:
+            errors.append(f'{path.name}: {type(exc).__name__}')
+    return errors, targets
 
 
-def public_http_url(url: str) -> tuple[bool, str]:
-    parts = urllib.parse.urlsplit(url)
-    if parts.scheme not in {"http", "https"} or not parts.hostname:
-        return False, "not an HTTP(S) URL"
-    if parts.username or parts.password:
-        return False, "URL contains credentials"
+def probe(target):
+    name, url, expected = target
     try:
-        addresses = {item[4][0] for item in socket.getaddrinfo(parts.hostname, parts.port or 443)}
-        if any(ipaddress.ip_address(address).is_private or ipaddress.ip_address(address).is_loopback for address in addresses):
-            return False, "private or loopback address"
-    except (OSError, ValueError):
-        return False, "hostname could not be resolved"
-    return True, ""
+        text, _ = download(url)
+        status, detail = classify(text, expected)
+    except UnicodeError:
+        status, detail = 'unverified_format', 'binary/non-UTF8 response; client testing required'
+    except Exception as exc:
+        # Do not expose stream tokens, payloads or exception URLs in public logs.
+        status, detail = 'unreachable', type(exc).__name__
+    return {'name': name, 'kind': expected, 'status': status, 'detail': detail}
 
 
-def fetch(url: str) -> tuple[bool, str]:
-    allowed, reason = public_http_url(url)
-    if not allowed:
-        return False, reason
-    request = urllib.request.Request(
-        url,
-        headers={"User-Agent": USER_AGENT, "Range": "bytes=0-511", "Accept": "*/*"},
-    )
-    try:
-        with urllib.request.urlopen(request, timeout=TIMEOUT_SECONDS) as response:
-            status = getattr(response, "status", 200)
-            response.read(512)
-            return status < 400, f"HTTP {status}"
-    except (urllib.error.URLError, TimeoutError, OSError) as exc:
-        return False, type(exc).__name__
-
-
-def load_json(path: Path) -> object:
-    with path.open(encoding="utf-8") as handle:
-        return json.load(handle)
-
-
-def collect_urls(config: object, multi: object, m3u_lines: list[str]) -> list[tuple[str, str]]:
-    found: list[tuple[str, str]] = []
-    if isinstance(config, dict):
-        for site in config.get("sites", []):
-            if isinstance(site, dict):
-                for key in ("api", "jar"):
-                    value = site.get(key)
-                    if isinstance(value, str) and value.startswith(("http://", "https://")):
-                        found.append((f"config.json sites.{key}", value))
-        for live in config.get("lives", []):
-            if isinstance(live, dict) and isinstance(live.get("url"), str):
-                found.append(("config.json lives.url", live["url"]))
-        spider = config.get("spider")
-        if isinstance(spider, str) and spider.startswith(("http://", "https://")):
-            found.append(("config.json spider", spider))
-    if isinstance(multi, dict):
-        for item in multi.get("urls", []):
-            if isinstance(item, dict) and isinstance(item.get("url"), str):
-                found.append(("multi.json urls.url", item["url"]))
-    for number, line in enumerate(m3u_lines, 1):
-        value = line.strip()
-        if value.startswith(("http://", "https://")):
-            found.append((f"live.m3u:{number}", value))
-    return found
-
-
-def validate_m3u(lines: list[str]) -> list[str]:
-    errors: list[str] = []
-    if not lines or not lines[0].strip().startswith("#EXTM3U"):
-        errors.append("live.m3u must start with #EXTM3U")
-    pending = False
-    for number, line in enumerate(lines, 1):
-        value = line.strip()
-        if value.startswith("#EXTINF"):
-            if pending:
-                errors.append(f"live.m3u:{number} has an EXTINF without a URL")
-            pending = True
-        elif value and not value.startswith("#"):
-            if not value.startswith(("http://", "https://")):
-                errors.append(f"live.m3u:{number} is not an HTTP(S) URL")
-            if not pending:
-                errors.append(f"live.m3u:{number} has a URL without an EXTINF")
-            pending = False
-    if pending:
-        errors.append("live.m3u ends with an EXTINF without a URL")
-    return errors
-
-
-def main() -> int:
-    parser = argparse.ArgumentParser(description="Validate Yingshicang configuration")
-    parser.add_argument("--network", action="store_true", help="check public HTTP(S) URLs")
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--network', action='store_true')
+    parser.add_argument('--streams', action='store_true', help='also check unique channel manifests (can take minutes)')
+    parser.add_argument('--report', type=Path, default=ROOT / 'reports/health.json')
     args = parser.parse_args()
-
-    errors: list[str] = []
-    try:
-        config = load_json(ROOT / "config.json")
-        multi = load_json(ROOT / "multi.json")
-    except (OSError, json.JSONDecodeError) as exc:
-        print(f"ERROR: {exc}")
-        return 1
-
-    if not isinstance(config, dict):
-        errors.append("config.json must contain a JSON object")
-    if not isinstance(multi, dict) or not isinstance(multi.get("urls"), list):
-        errors.append("multi.json must contain an urls array")
-
-    try:
-        lines = (ROOT / "live.m3u").read_text(encoding="utf-8").splitlines()
-    except OSError as exc:
-        print(f"ERROR: {exc}")
-        return 1
-    errors.extend(validate_m3u(lines))
-
-    urls = collect_urls(config, multi, lines)
-    if args.network:
-        for location, url in urls:
-            ok, detail = fetch(url)
-            print(f"{'OK' if ok else 'FAIL'} {location}: {redact(url)} ({detail})")
-            if not ok:
-                errors.append(f"network check failed for {location}")
-
+    errors, targets = inspect(ROOT)
     if errors:
-        for error in errors:
-            print(f"ERROR: {error}")
+        print('\n'.join('ERROR: ' + e for e in errors))
         return 1
-    print(f"Validation passed ({len(urls)} URL references; network={'on' if args.network else 'off'}).")
-    return 0
+    print('Local structure passed: config, test, multi and all local playlists.')
+    if not args.network:
+        print('Network NOT checked; this is not a playback test.')
+        return 0
+    unique = {}
+    for target in targets:
+        if args.streams or target[2] != 'media' or target[0].startswith('live.m3u:'):
+            unique.setdefault((target[1], target[2]), target)
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        results = list(pool.map(probe, unique.values()))
+    report = {'checked_at': datetime.now(timezone.utc).isoformat(),
+              'scope': 'manifests' if args.streams else 'entrypoints',
+              'playback_verified': False, 'results': results}
+    args.report.parent.mkdir(parents=True, exist_ok=True)
+    args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    for row in results:
+        print(f"{row['status']}: {row['name']} ({row['detail']})")
+    bad = sum(row['status'] != 'content_ok' for row in results)
+    print(f'{bad}/{len(results)} require attention. Sources were NOT changed.')
+    return 2 if bad else 0
 
 
-if __name__ == "__main__":
-    sys.exit(main())
+if __name__ == '__main__':
+    raise SystemExit(main())

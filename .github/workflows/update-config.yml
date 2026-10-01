@@ -1,12 +1,14 @@
-name: validate-config
+name: update-and-check
 
 on:
   push:
+    branches: [main]
     paths:
-      - "config.json"
-      - "multi.json"
-      - "live.m3u"
-      - "scripts/check_sources.py"
+      - "*.json"
+      - "*.m3u"
+      - "scripts/**"
+      - "tests/**"
+      - "upstream/**"
       - ".github/workflows/update-config.yml"
   schedule:
     - cron: "20 3 * * *"
@@ -15,21 +17,67 @@ on:
 permissions:
   contents: read
 
-jobs:
-  validate:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+concurrency:
+  group: config-maintenance
+  cancel-in-progress: false
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+jobs:
+  maintain:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
-      - name: Validate file formats
-        run: python scripts/check_sources.py
-
-      - name: Check public URLs
-        if: ${{ vars.ENABLE_NETWORK_CHECK == 'true' }}
-        run: python scripts/check_sources.py --network
+      - name: Regression tests and local validation
+        run: |
+          python -m unittest discover -s tests -v
+          python scripts/check_sources.py
+      - name: Refresh upstream without deleting historical entries
+        id: sync
+        continue-on-error: true
+        run: python scripts/sync_sources.py
+      - name: Rebuild and validate
+        run: |
+          python scripts/build_tel.py
+          python scripts/build_all.py
+          python scripts/check_sources.py
+      - name: Publish validated playlist updates only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- upstream/ipv6.m3u upstream/itv.m3u upstream/cn.m3u upstream/hk.m3u upstream/tel.m3u upstream/all.m3u
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: refresh playlists without deleting historical channels"
+            git push origin HEAD:main
+          fi
+      - name: Check entrypoints and channel manifests
+        id: health
+        continue-on-error: true
+        run: python scripts/check_sources.py --network --streams
+      - name: Keep dated health and sync reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-reports-${{ github.run_id }}
+          path: reports/*.json
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Surface failures instead of a false green result
+        if: always()
+        env:
+          SYNC_OUTCOME: ${{ steps.sync.outcome }}
+          HEALTH_OUTCOME: ${{ steps.health.outcome }}
+        run: |
+          echo "## Source maintenance" >> "$GITHUB_STEP_SUMMARY"
+          echo "Sync: $SYNC_OUTCOME; network: $HEALTH_OUTCOME" >> "$GITHUB_STEP_SUMMARY"
+          echo "Failures do not remove sources. See source-reports artifact. Manifest checks do not prove playback." >> "$GITHUB_STEP_SUMMARY"
+          if [ "$SYNC_OUTCOME" != success ] || [ "$HEALTH_OUTCOME" != success ]; then
+            exit 1
+          fi

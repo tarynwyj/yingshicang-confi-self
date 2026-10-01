@@ -1,0 +1,18 @@
+[
+  {
+    "path": "upstream/ipv6.m3u",
+    "url": "https://live.fanmingming.com/tv/m3u/ipv6.m3u"
+  },
+  {
+    "path": "upstream/itv.m3u",
+    "url": "https://live.fanmingming.com/tv/m3u/itv.m3u"
+  },
+  {
+    "path": "upstream/cn.m3u",
+    "url": "https://iptv-org.github.io/iptv/countries/cn.m3u"
+  },
+  {
+    "path": "upstream/hk.m3u",
+    "url": "https://iptv-org.github.io/iptv/countries/hk.m3u"
+  }
+]

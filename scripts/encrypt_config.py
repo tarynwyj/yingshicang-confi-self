@@ -1,104 +1,74 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-encrypt_config.py - 影视仓/TVBox 配置加密与 Base64 编码
-
-影视仓/TVBox 支持两种“隐藏明文”的导入方式：
-  1) Base64 编码：把整个 config.json 做 base64，得到一行文本。
-  2) AES-128-ECB 加密：把 JSON 用密钥 AES-128-ECB(PKCS7) 加密后转 hex，
-     导入时把 URL 填成密文文件地址，并在 App 里输入密钥即可解密。
-
-用法：
-    python3 scripts/encrypt_config.py config.json --mode base64
-    python3 scripts/encrypt_config.py config.json --mode aes --key 你的密钥
-    python3 scripts/encrypt_config.py config.json --mode all --key 你的密钥
-
-输出：
-    base64  -> config.base64.txt
-    aes     -> config.enc(hex 密文) + 屏幕打印密钥/导入说明
-仅依赖 Python 标准库 + cryptography。
+"""Experimental legacy encoding helper; client compatibility is NOT guaranteed.
+Base64 is not encryption. AES-ECB is a legacy compatibility format, not secure storage.
+Never publish passwords/tokens in a public repository, even encoded.
+Optional AES dependency: pip install cryptography
 """
 import argparse
 import base64
+import getpass
 import hashlib
+import json
 import os
-import sys
-
-BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from pathlib import Path
 
 
-def pkcs7_pad(b: bytes, block: int = 16) -> bytes:
-    n = block - (len(b) % block)
-    return b + bytes([n]) * n
+def pkcs7_pad(data, block=16):
+    count = block - len(data) % block
+    return data + bytes([count]) * count
 
 
-def pkcs7_unpad(b: bytes) -> bytes:
-    return b[:-b[-1]]
+def pkcs7_unpad(data):
+    if not data or len(data) % 16:
+        raise ValueError('invalid padded length')
+    count = data[-1]
+    if not 1 <= count <= 16 or data[-count:] != bytes([count]) * count:
+        raise ValueError('invalid padding or key')
+    return data[:-count]
 
 
-def derive_key(key: str) -> bytes:
-    """密钥统一规范为 16 字节：16 字节直接用，否则取 md5。"""
-    if len(key.encode()) == 16:
-        return key.encode()
-    return hashlib.md5(key.encode()).digest()
+def derive_key(key):
+    encoded = key.encode('utf-8')
+    if not encoded:
+        raise ValueError('empty key')
+    return encoded if len(encoded) == 16 else hashlib.md5(encoded).digest()
 
 
-def aes_encrypt(data: bytes, key: bytes) -> bytes:
-    try:
-        from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-    except ImportError:
-        sys.exit("需要 pip install cryptography")
-    cipher = Cipher(algorithms.AES(key), modes.ECB())
-    enc = cipher.encryptor()
-    return enc.update(pkcs7_pad(data)) + enc.finalize()
+def aes_encrypt(data, key):
+    from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+    encryptor = Cipher(algorithms.AES(key), modes.ECB()).encryptor()
+    return encryptor.update(pkcs7_pad(data)) + encryptor.finalize()
 
 
-def aes_decrypt(ct: bytes, key: bytes) -> bytes:
-    try:
-        from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-    except ImportError:
-        sys.exit("需要 pip install cryptography")
-    cipher = Cipher(algorithms.AES(key), modes.ECB())
-    dec = cipher.decryptor()
-    return pkcs7_unpad(dec.update(ct) + dec.finalize())
+def aes_decrypt(data, key):
+    from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+    decryptor = Cipher(algorithms.AES(key), modes.ECB()).decryptor()
+    return pkcs7_unpad(decryptor.update(data) + decryptor.finalize())
 
 
 def main():
-    ap = argparse.ArgumentParser(description="影视仓配置加密/Base64 工具")
-    ap.add_argument("input", help="输入的 JSON 配置文件")
-    ap.add_argument("--mode", choices=["base64", "aes", "all"], default="base64",
-                    help="base64=编码, aes=加密, all=两者都生成")
-    ap.add_argument("--key", default="", help="AES 密钥(16字符；否则自动 md5 为 16 字节)")
-    ap.add_argument("--out", help="输出目录，默认脚本同级的 outputs 子目录")
-    args = ap.parse_args()
-
-    if not os.path.exists(args.input):
-        sys.exit(f"文件不存在: {args.input}")
-    data = open(args.input, "rb").read()
-    out_dir = args.out or os.path.join(BASE, "outputs")
-    os.makedirs(out_dir, exist_ok=True)
-
-    if args.mode in ("base64", "all"):
-        b64 = base64.b64encode(data).decode()
-        with open(os.path.join(out_dir, "config.base64.txt"), "w") as f:
-            f.write(b64)
-        print("[OK] base64 已写入 outputs/config.base64.txt")
-        print("     导入时把这一整行作为接口地址(或拼成 data:text/plain;base64, 前缀地址)。")
-
-    if args.mode in ("aes", "all"):
-        if not args.key:
-            sys.exit("--mode aes 需要 --key")
-        key = derive_key(args.key)
-        ct = aes_encrypt(data, key)
-        hextext = ct.hex()
-        with open(os.path.join(out_dir, "config.enc"), "w") as f:
-            f.write(hextext)
-        print("[OK] AES-128-ECB 密文已写入 outputs/config.enc")
-        print(f"     密钥: {args.key}  (派生字节: {key.hex()})")
-        print("     使用方法: 把 config.enc 上传到任意静态托管(如本仓库)，"
-              "导入地址填该文件 URL，App 弹出密钥时输入上面的密钥。")
-        print("     注意: 密钥要自己保管好，丢了无法解密。")
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('input', type=Path)
+    parser.add_argument('--mode', choices=('base64', 'aes', 'all'), default='base64')
+    parser.add_argument('--key-env', default='YSC_CONFIG_KEY', help='environment variable name, not the secret')
+    parser.add_argument('--out', type=Path, default=Path(__file__).resolve().parents[1] / 'outputs')
+    args = parser.parse_args()
+    data = args.input.read_bytes()
+    parsed = json.loads(data.decode('utf-8-sig'))
+    if not isinstance(parsed, dict):
+        parser.error('input must be a JSON object')
+    outputs = {}
+    if args.mode in ('aes', 'all'):
+        secret = os.environ.get(args.key_env) or getpass.getpass('AES key (not logged): ')
+        outputs['config.enc'] = aes_encrypt(data, derive_key(secret)).hex()
+    if args.mode in ('base64', 'all'):
+        outputs['config.base64.txt'] = base64.b64encode(data).decode('ascii')
+    args.out.mkdir(parents=True, exist_ok=True)
+    for name, value in outputs.items():
+        (args.out / name).write_text(value, encoding='utf-8')
+        print('Written: ' + str(args.out / name))
+    print('Experimental output only. Verify client support; do not publish secrets.')
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
