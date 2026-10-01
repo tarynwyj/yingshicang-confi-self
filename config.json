@@ -1,33 +1,5 @@
 {
-  "sites": [
-    {
-      "key": "alist",
-      "name": "Alist(自有-改IP)",
-      "type": 1,
-      "api": "http://127.0.0.1:5678/vod",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1
-    },
-    {
-      "key": "emby",
-      "name": "Emby(自有-改IP)",
-      "type": 1,
-      "api": "http://127.0.0.1:8096/vod/emby",
-      "searchable": 1,
-      "quickSearch": 0,
-      "filterable": 1
-    },
-    {
-      "key": "jellyfin",
-      "name": "Jellyfin(自有-改IP)",
-      "type": 1,
-      "api": "http://127.0.0.1:8096/vod/jellyfin",
-      "searchable": 1,
-      "quickSearch": 0,
-      "filterable": 1
-    }
-  ],
+  "sites": [],
   "lives": [
     {
       "name": "电信精选(官方台)",
@@ -57,7 +29,7 @@
     {
       "name": "本地直播(我的)",
       "type": 0,
-      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/live.m3u"
+      "url": "https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/live.m3u"
     }
   ],
   "parses": [],
