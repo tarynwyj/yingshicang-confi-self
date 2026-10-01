@@ -4,27 +4,27 @@
     {
       "name": "电信精选(官方台)",
       "type": 0,
-      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/upstream/tel.m3u"
+      "url": "https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/upstream/tel.m3u"
     },
     {
       "name": "央视卫视(IPv6)",
       "type": 0,
-      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/upstream/ipv6.m3u"
+      "url": "https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/upstream/ipv6.m3u"
     },
     {
       "name": "央视卫视(IPv4)",
       "type": 0,
-      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/upstream/itv.m3u"
+      "url": "https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/upstream/itv.m3u"
     },
     {
       "name": "国内频道",
       "type": 0,
-      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/upstream/cn.m3u"
+      "url": "https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/upstream/cn.m3u"
     },
     {
       "name": "香港频道",
       "type": 0,
-      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/upstream/hk.m3u"
+      "url": "https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/upstream/hk.m3u"
     },
     {
       "name": "本地直播(我的)",
