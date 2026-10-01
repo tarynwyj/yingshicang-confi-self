@@ -1,0 +1,28 @@
+{
+  "urls": [
+    {
+      "name": "Qist 自用点播",
+      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/qist/tvbox/master/jsm.json"
+    },
+    {
+      "name": "饭太硬（Qist维护）",
+      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/qist/tvbox/master/fty.json"
+    },
+    {
+      "name": "潇洒（Qist维护）",
+      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/qist/tvbox/master/xiaosa/api.json"
+    },
+    {
+      "name": "高天流云 PG",
+      "url": "https://raw.githubusercontent.com/gaotianliuyun/gao/master/0825.json"
+    },
+    {
+      "name": "高天流云 FTY",
+      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/gaotianliuyun/gao/master/0826.json"
+    },
+    {
+      "name": "Gaoops点播",
+      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/mrgaoshuiquan/tvbox-config/main/tvbox.json"
+    }
+  ]
+}

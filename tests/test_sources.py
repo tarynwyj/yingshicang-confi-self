@@ -19,6 +19,18 @@ M3U = '#EXTM3U\n#EXTINF:-1 group-title="Test",Example [Geo-blocked]\n#EXTVLCOPT:
 
 
 class ValidationTests(unittest.TestCase):
+    def test_jsonc_preserves_urls_and_string_content(self):
+        value = '{/* comment */"url":"https://example.org/a//b", "literal":"x/*y*/,}", // comment\n"items":[1,2,],}'
+        self.assertEqual(source_utils.parse_config(value), {'url': 'https://example.org/a//b', 'literal': 'x/*y*/,}', 'items': [1, 2]})
+    def test_jsonc_preserves_escaped_quotes(self):
+        value = '{"x":"a\\\"//b", /* ignored */"n":1,}'
+        self.assertEqual(source_utils.parse_config(value)['x'], 'a"//b')
+    def test_jsonc_rejects_unterminated_comment(self):
+        with self.assertRaises(ValueError):
+            source_utils.parse_config('{"x":1,/*')
+    def test_vod_config_accepts_client_live_extensions(self):
+        data = {'sites': [{'key':'X','name':'X','api':'csp_X','type':3}], 'lives':[{'name':'L','url':'proxy://live'}]}
+        self.assertEqual(source_utils.classify(json.dumps(data), 'config')[0], 'content_ok')
     def test_empty_config_rejected(self):
         self.assertTrue(source_utils.config_errors({}))
     def test_empty_multi_entry_rejected(self):
@@ -119,9 +131,11 @@ class PreservationTests(unittest.TestCase):
                 (root / name).write_text(json.dumps(live), encoding='utf-8')
             (root / 'multi.json').write_text(json.dumps({'urls': [{'name': 'X', 'url': 'https://example.org/a.json'}]}), encoding='utf-8')
             (root / 'live.m3u').write_text(M3U, encoding='utf-8')
+            (root / 'multi-vod.json').write_text(json.dumps({'urls': [{}]}), encoding='utf-8')
             (root / 'upstream/bad.m3u').write_text('<html>Error</html>', encoding='utf-8')
             errors, _ = check_sources.inspect(root)
             self.assertTrue(any('bad.m3u' in error for error in errors))
+            self.assertTrue(any('multi-vod.json' in error for error in errors))
             (root / 'config-test.json').write_text('{}', encoding='utf-8')
             errors, _ = check_sources.inspect(root)
             self.assertTrue(any('config-test.json' in error for error in errors))

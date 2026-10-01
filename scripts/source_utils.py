@@ -115,14 +115,72 @@ def config_errors(data, multi=False):
     return errors
 
 
+def parse_config(text):
+    """Read JSON/JSONC without evaluating code; keep comments inside strings intact."""
+    try:
+        return json.loads(text)
+    except ValueError:
+        pass
+    output, i, quoted, escape = [], 0, False, False
+    while i < len(text):
+        ch = text[i]
+        if quoted:
+            output.append(ch)
+            if escape:
+                escape = False
+            elif ch == '\\':
+                escape = True
+            elif ch == '"':
+                quoted = False
+            i += 1
+        elif ch == '"':
+            quoted = True
+            output.append(ch)
+            i += 1
+        elif text[i:i+2] == '//':
+            i = text.find('\n', i)
+            if i < 0:
+                break
+            output.append('\n')
+        elif text[i:i+2] == '/*':
+            end = text.find('*/', i + 2)
+            if end < 0:
+                raise ValueError('unterminated comment')
+            output.append(' ')
+            i = end + 2
+        else:
+            output.append(ch)
+            i += 1
+    text = ''.join(output)
+    output, quoted, escape = [], False, False
+    for i, ch in enumerate(text):
+        if not quoted and ch == ',' and text[i+1:].lstrip().startswith(('}', ']')):
+            continue
+        output.append(ch)
+        if quoted:
+            if escape:
+                escape = False
+            elif ch == '\\':
+                escape = True
+            elif ch == '"':
+                quoted = False
+        elif ch == '"':
+            quoted = True
+    return json.loads(''.join(output))
+
+
 def classify(text, expected):
     if '<html' in text[:1000].lower() or '<!doctype html' in text[:1000].lower():
         return 'invalid', 'HTML page, not configuration/media'
     if expected == 'config':
         try:
-            data = json.loads(text)
+            data = parse_config(text)
         except ValueError:
-            return 'unverified_format', 'not strict JSON; encoding/comments require client testing'
+            return 'unverified_format', 'not JSON/JSONC; encoding requires client testing'
+        if isinstance(data, dict) and isinstance(data.get('sites'), list) and data['sites']:
+            vod_errors = config_errors({'sites': data['sites']})
+            if not vod_errors:
+                return 'content_ok', 'VOD site structure validated; live extensions/JAR/playback untested'
         errors = config_errors(data, multi=isinstance(data, dict) and 'urls' in data)
         if errors:
             # External clients can support relative/proxy URLs and nested live groups.

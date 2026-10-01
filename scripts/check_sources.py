@@ -12,14 +12,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def inspect(root):
     errors, targets = [], []
-    for name in ('config.json', 'config-test.json', 'multi.json'):
+    names = ['config.json', 'config-test.json', 'multi.json']
+    if (root / 'multi-vod.json').exists():
+        names.append('multi-vod.json')
+    for name in names:
         try:
             data = json.loads((root / name).read_text(encoding='utf-8-sig'))
-            found = config_errors(data, multi=name == 'multi.json')
+            found = config_errors(data, multi=name.startswith('multi'))
             errors.extend(f'{name}: {e}' for e in found)
             if found:
                 continue
-            field = 'urls' if name == 'multi.json' else 'lives'
+            field = 'urls' if name.startswith('multi') else 'lives'
             for row in data.get(field, []):
                 targets.append((name + ': ' + row['name'], row['url'], 'config' if field == 'urls' else 'playlist'))
         except (OSError, ValueError, TypeError) as exc:
