@@ -4,7 +4,21 @@
 
 ## 你要用哪个地址
 
-**要找原来的多个仓库，请导入多仓入口：**
+**优先测试点播，请导入本次筛选的点播多仓（6 个来源）：**
+
+```text
+https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi-vod.json
+```
+
+CDN 备用地址：
+
+```text
+https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/multi-vod.json
+```
+
+本次加入 Qist 自用点播、饭太硬（Qist维护）、潇洒（Qist维护）、高天流云 PG、高天流云 FTY、Gaoops点播。测试范围为配置下载、点播站点结构、扩展地址及文件头；实际搜索和播放待设备验证。证据见 [2026-10-01 来源检查](source-checks/2026-10-01-vod.json)。
+
+**要保留所有历史仓库并同时使用新增来源，请导入完整多仓（17 个入口）：**
 
 ```text
 https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi.json
@@ -45,7 +59,7 @@ https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/multi.json
 - 新旧列表合并：优先采用新条目，但保留上游消失的历史 URL 和播放参数。不会自动清除失效、过期或地域限制条目；重复 URL 加相同播放参数才去重，因此列表可能逐渐增长。
 - 重建域名精选、完整聚合列表。精选只是域名筛选，**不是“官方授权/电信必能播放”的保证**。
 - 自动提交仅限六个 `upstream/*.m3u` 输出，不会改写 `multi.json`、`config.json` 或 `live.m3u`。Git 历史保留之前版本；不强推。
-- 联网检测默认执行，覆盖入口和频道清单。HTTP 200 的 HTML 被判无效；特殊格式标为待验证。不会执行下载的 JAR、脚本，也不会抓取所有视频分片。
+- 联网检测默认执行，覆盖完整多仓、点播多仓和配置入口。手动运行时可勾选 check_streams 检查全部频道清单。HTTP 200 的 HTML 被判无效；支持 JSON 注释和尾逗号，其他特殊编码仍标为待验证。不会执行下载的 JAR、脚本，也不会抓取所有视频分片。
 - 同步或检测异常会让任务显示需要处理，不再以绿色代表一切正常。报告在该次 Actions 的 `source-reports-运行编号` 附件中，保留 30 天。**红色报告不触发删除，也不代表所有配置都坏了。**
 
 报告状态：`content_ok` 仅表示内容结构符合检查范围；`unverified_format` 为非标准格式待人工验证；`invalid` 为内容错误；`unreachable` 为本次网络不可达。同步报告中的 `kept_previous` 表示保护生效，旧文件未被覆盖。

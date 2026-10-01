@@ -1,0 +1,128 @@
+{
+  "checked_at": "2026-10-01 08:08:14 UTC",
+  "scope": "configuration content, VOD site schema and extension header",
+  "playback_verified": false,
+  "source_count": 6,
+  "sources": [
+    {
+      "name": "Qist 自用点播",
+      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/qist/tvbox/master/jsm.json",
+      "upstream": "https://github.com/qist/tvbox",
+      "sites": 149,
+      "valid_sites": 149,
+      "format": "JSON",
+      "configuration_sha256": "b563fbd5fb466a3ed82f14a84df62a3b90a7a79d08cbb3b36403006b97ab39d5",
+      "extension": {
+        "url": "https://gh-proxy.com/https:/raw.githubusercontent.com/qist/tvbox/master/jar/spider.jar",
+        "http": 206,
+        "header": "ZIP/JAR header",
+        "executed": false
+      }
+    },
+    {
+      "name": "饭太硬（Qist维护）",
+      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/qist/tvbox/master/fty.json",
+      "upstream": "https://github.com/qist/tvbox",
+      "sites": 47,
+      "valid_sites": 47,
+      "format": "JSON",
+      "configuration_sha256": "3989fe278e0c9610854e742000997088f5b7e043c77b442b9b9f229a21068630",
+      "extension": {
+        "url": "https://gh-proxy.com/https:/raw.githubusercontent.com/qist/tvbox/master/jar/fan.txt",
+        "http": 206,
+        "header": "ZIP/JAR header",
+        "executed": false
+      }
+    },
+    {
+      "name": "潇洒（Qist维护）",
+      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/qist/tvbox/master/xiaosa/api.json",
+      "upstream": "https://github.com/qist/tvbox",
+      "sites": 103,
+      "valid_sites": 103,
+      "format": "JSON",
+      "configuration_sha256": "23ff70387cf78ac98bbc6222f1fcc91f07e8ba6f110fa46db459a24faedce5f2",
+      "extension": {
+        "url": "https://gh-proxy.com/https:/raw.githubusercontent.com/qist/tvbox/master/xiaosa/spider.jar",
+        "http": 206,
+        "header": "ZIP/JAR header",
+        "executed": false
+      }
+    },
+    {
+      "name": "高天流云 PG",
+      "url": "https://raw.githubusercontent.com/gaotianliuyun/gao/master/0825.json",
+      "upstream": "https://github.com/gaotianliuyun/gao",
+      "sites": 135,
+      "valid_sites": 135,
+      "format": "JSON",
+      "configuration_sha256": "8c86c98c389d23f84afbcf38d96fe3dcbe8ab29718a825b04140ff7a70a8be68",
+      "extension": {
+        "url": "https://raw.githubusercontent.com/gaotianliuyun/gao/master/jar/pg.jar",
+        "http": 206,
+        "header": "ZIP/JAR header",
+        "executed": false
+      }
+    },
+    {
+      "name": "高天流云 FTY",
+      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/gaotianliuyun/gao/master/0826.json",
+      "upstream": "https://github.com/gaotianliuyun/gao",
+      "sites": 51,
+      "valid_sites": 51,
+      "format": "JSON",
+      "configuration_sha256": "f9bc0b6d11b03607368251d9710ae49cfb052090c451c0fa06e94069bb9b8b8a",
+      "extension": {
+        "url": "https://gh-proxy.com/https:/raw.githubusercontent.com/gaotianliuyun/gao/master/jar/fan.txt",
+        "http": 206,
+        "header": "ZIP/JAR header",
+        "executed": false
+      }
+    },
+    {
+      "name": "Gaoops点播",
+      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/mrgaoshuiquan/tvbox-config/main/tvbox.json",
+      "upstream": "https://github.com/mrgaoshuiquan/tvbox-config",
+      "sites": 52,
+      "valid_sites": 52,
+      "format": "JSON",
+      "configuration_sha256": "761624cbc30c8c9d1cba1ab78d945596cca9c5527709051244d3ea30f743321d",
+      "extension": {
+        "url": "https://gh-proxy.com/https:/raw.githubusercontent.com/mrgaoshuiquan/tvbox-config/main/jar/spider.jar",
+        "http": 206,
+        "header": "ZIP/JAR header",
+        "executed": false
+      }
+    }
+  ],
+  "excluded": [
+    {
+      "name": "Qist 综合 0821",
+      "reason": "not all site entries passed schema validation"
+    },
+    {
+      "name": "高天流云综合 0821",
+      "reason": "not all site entries passed schema validation"
+    },
+    {
+      "name": "蜂蜜（原仓）",
+      "reason": "local/market/push example, not a ready VOD catalogue"
+    },
+    {
+      "name": "运输车",
+      "reason": "not readable/parseable during this check"
+    },
+    {
+      "name": "橘子柚",
+      "reason": "not readable/parseable during this check"
+    },
+    {
+      "name": "霜辉月明 Python",
+      "reason": "not readable/parseable during this check"
+    },
+    {
+      "name": "王二小（新版配置）",
+      "reason": "not readable/parseable during this check"
+    }
+  ]
+}
