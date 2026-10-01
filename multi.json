@@ -1,6 +1,10 @@
 {
   "urls": [
     {
+      "url": "http://肥猫.net/tv",
+      "name": "肥猫"
+    },
+    {
       "url": "https://gh-proxy.com/raw.githubusercontent.com/gaotianliuyun/gao/master/js.json",
       "name": "高天流云-js"
     },
