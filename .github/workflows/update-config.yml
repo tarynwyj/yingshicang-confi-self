@@ -71,9 +71,6 @@ jobs:
           else
             python scripts/run_maintenance_check.py health
           fi
-      - name: Evaluate new VOD candidates
-        if: github.event_name == 'push'
-        run: python scripts/check_candidate_sources.py source-checks/2026-10-09-candidates.json
       - name: Keep dated health and sync reports
         if: always()
         uses: actions/upload-artifact@v4
