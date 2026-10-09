@@ -1,0 +1,68 @@
+{
+  "checked_at": "2026-10-09 01:02:44 UTC",
+  "workflow_run": "https://github.com/tarynwyj/yingshicang-confi-self/actions/runs/37867568926",
+  "sources": [
+    {
+      "name": "Ray（dxawi）",
+      "url": "https://raw.githubusercontent.com/dxawi/0/main/0.json",
+      "origin": "https://github.com/dxawi/0/blob/main/0.json",
+      "status": "candidate_passed",
+      "sites": 48,
+      "configuration_sha256": "2d83952867f64bcf89285ae21ceda6409529fa5ac94575e2aba9696d09983ab0",
+      "extension_http": 206,
+      "extension_header": "ZIP/JAR",
+      "extension_executed": false,
+      "playback_verified": false
+    },
+    {
+      "name": "王二小（维护镜像）",
+      "url": "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/wangerxiao.json",
+      "origin": "https://github.com/Lightconer/tvbox-ysc-config/blob/main/output/wangerxiao.json",
+      "status": "candidate_passed",
+      "sites": 63,
+      "configuration_sha256": "1235b5bd0bc4d3b7447f7a5505db5b130a6f47161c1684008fcf05f0ab86ea9c",
+      "extension_http": 206,
+      "extension_header": "ZIP/JAR",
+      "extension_executed": false,
+      "playback_verified": false
+    }
+  ],
+  "additional_file_checks": [
+    {
+      "path": "cat/cntv_open.js",
+      "sha": "fcd753645fde95118986eed36e2782a286f61840",
+      "readable": true
+    },
+    {
+      "path": "cat/MyCatBookan.js",
+      "sha": "afb43b928dcaa4a1fdc5817a1dca4b78c43c3cd9",
+      "readable": true
+    },
+    {
+      "path": "cat/boosj_open.js",
+      "sha": "abcce6fe10ddda5ff924ba0b2da53a9bfa3c8db8",
+      "readable": true
+    },
+    {
+      "path": "cat/tuxiaobei_open.js",
+      "sha": "b560037da2c30be0c5e001e40545d5fe42d87588",
+      "readable": true
+    },
+    {
+      "path": "cat/ubestkid_open.js",
+      "sha": "2eda6aa0de50e6c2a51403061f78da5637c92928",
+      "readable": true
+    }
+  ],
+  "not_added": [
+    {
+      "name": "肥猫（维护镜像）",
+      "reason": "configuration and main JAR readable, but relative api/js/live paths absent from mirror output directory; upstream currently uses cached configuration"
+    },
+    {
+      "name": "4K小盒子（维护镜像）",
+      "reason": "candidate configuration/extension check returned HTTP errors"
+    }
+  ],
+  "playback_verified": false
+}
