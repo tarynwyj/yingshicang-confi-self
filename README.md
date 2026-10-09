@@ -4,7 +4,7 @@
 
 ## 你要用哪个地址
 
-**优先测试点播，请导入本次筛选的点播多仓（6 个来源）：**
+**优先测试点播，请导入本次筛选的点播多仓（8 个来源）：**
 
 ```text
 https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi-vod.json
@@ -16,9 +16,11 @@ https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi-vod
 https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi-vod.json
 ```
 
-本次加入 Qist 自用点播、饭太硬（Qist维护）、潇洒（Qist维护）、高天流云 PG、高天流云 FTY、Gaoops点播。测试范围为配置下载、点播站点结构、扩展地址及文件头；实际搜索和播放待设备验证。证据见 [2026-10-01 来源检查](source-checks/2026-10-01-vod.json)。
+2026-10-01 加入 Qist 自用点播、饭太硬（Qist维护）、潇洒（Qist维护）、高天流云 PG、高天流云 FTY、Gaoops点播。测试范围为配置下载、点播站点结构、扩展地址及文件头；实际搜索和播放待设备验证。证据见 [2026-10-01 来源检查](source-checks/2026-10-01-vod.json)。
 
-**要保留所有历史仓库并同时使用新增来源，请导入完整多仓（17 个入口）：**
+2026-10-09 新增 Ray（dxawi）和王二小（维护镜像），分别读取到 48、63 个站点条目；配置与主扩展通过检查，Ray 的相对路径脚本已确认存在。站点条目数不等于实测播放数量。详情见 [2026-10-09 来源检查](source-checks/2026-10-09-vod.json)。
+
+**要保留所有历史仓库并同时使用新增来源，请导入完整多仓（19 个入口）：**
 
 ```text
 https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi.json
