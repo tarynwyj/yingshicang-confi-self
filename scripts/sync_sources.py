@@ -3,6 +3,8 @@
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 import json
+import http.client
+import urllib.error
 from pathlib import Path
 from source_utils import download, entries, m3u_errors
 
@@ -34,19 +36,21 @@ def refresh(item, root=ROOT):
     if relative not in ALLOWED:
         raise ValueError('output path not allowlisted')
     path = root / relative
+    old = path.read_text(encoding='utf-8-sig')
+    if m3u_errors(old):
+        raise ValueError('invalid local snapshot')
     try:
-        old = path.read_text(encoding='utf-8-sig')
         text, _ = download(item['url'])
         result, retained = merge(old, text)
-        changed = result != old
-        if changed:
-            temporary = path.with_suffix('.m3u.tmp')
-            temporary.write_text(result, encoding='utf-8')
-            temporary.replace(path)
-        return {'path': relative, 'status': 'updated' if changed else 'unchanged',
-                'historical_entries_retained': retained, 'playback_verified': False}
-    except Exception as exc:
+    except (OSError, ValueError, urllib.error.URLError, http.client.HTTPException) as exc:
         return {'path': relative, 'status': 'kept_previous', 'reason': type(exc).__name__}
+    changed = result != old
+    if changed:
+        temporary = path.with_suffix('.m3u.tmp')
+        temporary.write_text(result, encoding='utf-8')
+        temporary.replace(path)
+    return {'path': relative, 'status': 'updated' if changed else 'unchanged',
+            'historical_entries_retained': retained, 'playback_verified': False}
 
 
 def main():

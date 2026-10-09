@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Ray（dxawi）",
+    "url": "https://raw.githubusercontent.com/dxawi/0/main/0.json",
+    "origin": "https://github.com/dxawi/0/blob/main/0.json"
+  },
+  {
+    "name": "王二小（维护镜像）",
+    "url": "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/wangerxiao.json",
+    "origin": "https://github.com/Lightconer/tvbox-ysc-config/blob/main/output/wangerxiao.json"
+  },
+  {
+    "name": "肥猫（维护镜像）",
+    "url": "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/feimao.json",
+    "origin": "https://github.com/Lightconer/tvbox-ysc-config/blob/main/output/feimao.json"
+  },
+  {
+    "name": "4K小盒子（维护镜像）",
+    "url": "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/4k.json",
+    "origin": "https://github.com/Lightconer/tvbox-ysc-config/blob/main/output/4k.json"
+  }
+]

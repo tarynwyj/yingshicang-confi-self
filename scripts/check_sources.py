@@ -4,6 +4,8 @@ import argparse
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 import json
+import http.client
+import urllib.error
 from pathlib import Path
 from source_utils import classify, config_errors, download, entries, m3u_errors
 
@@ -45,7 +47,7 @@ def probe(target):
         status, detail = classify(text, expected)
     except UnicodeError:
         status, detail = 'unverified_format', 'binary/non-UTF8 response; client testing required'
-    except Exception as exc:
+    except (OSError, ValueError, urllib.error.URLError, http.client.HTTPException) as exc:
         # Do not expose stream tokens, payloads or exception URLs in public logs.
         status, detail = 'unreachable', type(exc).__name__
     return {'name': name, 'kind': expected, 'status': status, 'detail': detail}

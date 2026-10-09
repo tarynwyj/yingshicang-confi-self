@@ -46,8 +46,7 @@ jobs:
           python scripts/check_sources.py
       - name: Refresh upstream without deleting historical entries
         id: sync
-        continue-on-error: true
-        run: python scripts/sync_sources.py
+        run: python scripts/run_maintenance_check.py sync
       - name: Rebuild and validate
         run: |
           python scripts/build_tel.py
@@ -64,15 +63,17 @@ jobs:
           fi
       - name: Check warehouse and configuration entrypoints
         id: health
-        continue-on-error: true
         env:
           CHECK_STREAMS: ${{ inputs.check_streams || false }}
         run: |
           if [ "$CHECK_STREAMS" = true ]; then
-            python scripts/check_sources.py --network --streams
+            python scripts/run_maintenance_check.py health --streams
           else
-            python scripts/check_sources.py --network
+            python scripts/run_maintenance_check.py health
           fi
+      - name: Evaluate new VOD candidates
+        if: github.event_name == 'push'
+        run: python scripts/check_candidate_sources.py source-checks/2026-10-09-candidates.json
       - name: Keep dated health and sync reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -81,15 +82,6 @@ jobs:
           path: reports/*.json
           retention-days: 30
           if-no-files-found: warn
-      - name: Surface failures instead of a false green result
-        if: always()
-        env:
-          SYNC_OUTCOME: ${{ steps.sync.outcome }}
-          HEALTH_OUTCOME: ${{ steps.health.outcome }}
-        run: |
-          echo "## Source maintenance" >> "$GITHUB_STEP_SUMMARY"
-          echo "Sync: $SYNC_OUTCOME; network: $HEALTH_OUTCOME" >> "$GITHUB_STEP_SUMMARY"
-          echo "Failures do not remove sources. See source-reports artifact. Manifest checks do not prove playback." >> "$GITHUB_STEP_SUMMARY"
-          if [ "$SYNC_OUTCOME" != success ] || [ "$HEALTH_OUTCOME" != success ]; then
-            exit 1
-          fi
+      - name: Maintenance completed
+        if: success()
+        run: echo "Maintenance passed. External-source warnings are recorded in the job summary and report artifact."
