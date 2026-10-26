@@ -34,10 +34,11 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      # node24 releases; input names checked against each action.yml on 2026-10-26.
+      - uses: actions/checkout@v7
         with:
           ref: main
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - name: Regression tests and local validation
@@ -61,7 +62,7 @@ jobs:
             git commit -m "chore: refresh playlists without deleting historical channels"
             git push origin HEAD:main
           fi
-      - name: Check warehouse and configuration entrypoints
+      - name: Check VOD warehouses and configuration entrypoints
         id: health
         env:
           CHECK_STREAMS: ${{ inputs.check_streams || false }}
@@ -71,9 +72,9 @@ jobs:
           else
             python scripts/run_maintenance_check.py health
           fi
-      - name: Keep dated health and sync reports
+      - name: Upload health and sync reports (30-day artifact)
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: source-reports-${{ github.run_id }}
           path: reports/*.json
@@ -81,4 +82,4 @@ jobs:
           if-no-files-found: warn
       - name: Maintenance completed
         if: success()
-        run: echo "Maintenance passed. External-source warnings are recorded in the job summary and report artifact."
+        run: echo "Maintenance passed. External-source warnings are listed in the job summary and the source-reports artifact. Playback is not verified."
