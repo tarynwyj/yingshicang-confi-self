@@ -61,26 +61,37 @@ https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-conf
 - 新旧列表合并：优先采用新条目，但保留上游消失的历史 URL 和播放参数。不会自动清除失效、过期或地域限制条目；重复 URL 加相同播放参数才去重，因此列表可能逐渐增长。
 - 重建域名精选、完整聚合列表。精选只是域名筛选，**不是“官方授权/电信必能播放”的保证**。
 - 自动提交仅限六个 `upstream/*.m3u` 输出，不会改写 `multi.json`、`config.json` 或 `live.m3u`。Git 历史保留之前版本；不强推。
-- 联网检测默认执行，覆盖完整多仓、点播多仓和配置入口。手动运行时可勾选 check_streams 检查全部频道清单。HTTP 200 的 HTML 被判无效；支持 JSON 注释和尾逗号，其他特殊编码仍标为待验证。不会执行下载的 JAR、脚本，也不会抓取所有视频分片。
-- 外部源超时、域名失效、特殊格式和上游下载失败仅生成警告，保留旧数据，正常完成维护；不会因同一批旧源每天触发任务失败邮件。程序崩溃、配置损坏、测试失败、报告损坏、文件写入失败或发布失败仍会使任务失败。报告在该次 Actions 的 `source-reports-运行编号` 附件中保留 30 天。绿色仅表示维护流程正常，不表示每个来源能播放。
+- 联网检测默认执行，覆盖完整多仓、点播多仓和配置入口。手动运行时可勾选 check_streams 检查全部频道清单。HTTP 200 的 HTML 与空响应判为无效；支持 JSON 注释和尾逗号；编码载荷与非严格 JSON 分别标注为待验证。不会执行下载的 JAR、脚本，也不会抓取所有视频分片。
+- 外部源超时、域名失效、特殊格式和上游下载失败仅生成警告，保留旧数据，正常完成维护；不会因同一批旧源每天触发任务失败邮件。程序崩溃、配置损坏、测试失败、报告损坏、文件写入失败或发布失败仍会使任务失败。每次运行的 **Summary** 会按来源列出类别、详情与建议操作，完整 JSON 见 `source-reports-运行编号` 附件（保留 30 天）。绿色仅表示维护流程正常，不表示每个来源能播放。
 
-报告状态：`content_ok` 仅表示内容结构符合检查范围；`unverified_format` 为非标准格式待人工验证；`invalid` 为内容错误；`unreachable` 为本次网络不可达。同步报告中的 `kept_previous` 表示保护生效，旧文件未被覆盖。
+## 状态、退出码与报告
+
+| 状态 | 含义 | 建议 |
+|---|---|---|
+| `content_ok` | 结构符合本检查范围，**不代表能播放** | 无需处理；播放仍需设备实测 |
+| `unverified_format` | 编码载荷或客户端特有格式，通用解析无法判定 | 在影视仓客户端实测；不要据此删除来源 |
+| `invalid` | 空响应、错误页或结构不合法 | 核对上游地址与返回内容 |
+| `unreachable` | 本次网络不可达，详情写明 DNS/超时/HTTP 状态码 | 检查域名与网络后重试；可能只是暂时不可达 |
+| `kept_previous` | 同步失败或内容无效，旧文件已保留 | 确认上游状态后重试 |
+
+退出码：`0` 结构校验通过（未联网）或没有来源需要关注；`2` 联网检查有来源需要关注（只警告，不改源）；`1` 结构或程序错误。任何状态都不会自动删除来源或改写配置。
 
 ## 本地检查
 
-需要 Python 3.12；维护脚本和测试仅使用标准库。
+需要 Python 3.12；除 `encrypt_config.py` 的 AES 模式需另装 `cryptography` 外，维护脚本和测试仅使用标准库。
 
 ```text
 python -m unittest discover -s tests -v
 python scripts/check_sources.py
-python scripts/sync_sources.py
 python scripts/build_tel.py
 python scripts/build_all.py
 python scripts/check_sources.py --network
 python scripts/check_sources.py --network --streams
 ```
 
-`--streams` 检查所有去重后的频道清单，可能花数分钟；不验证解码、授权或所有分片。检测报告写入忽略版本控制的 `reports/`，不会包含完整带令牌 URL。
+`sync_sources.py` 会改写 `upstream/*.m3u`，`build_tel.py` / `build_all.py` 会改写生成的列表。验证同步逻辑时，请把仓库复制到临时目录、在副本里执行；不要在正式工作树里直接运行 `sync_sources.py`。
+
+`--streams` 检查所有去重后的频道清单，可能花数分钟；不验证解码、授权或所有分片。检测报告写入忽略版本控制的 `reports/`，不会包含完整带令牌 URL。`--network` 走直连（脚本显式忽略代理环境变量），本机必须能直连目标地址；否则会表现为大量 `unreachable`，那是本机网络限制而不是来源永久失效。
 
 ## 自有频道、媒体库及扩展
 
