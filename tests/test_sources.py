@@ -1,10 +1,12 @@
 import contextlib
 import io
 import json
+import socket
 from pathlib import Path
 import sys
 import tempfile
 import unittest
+import urllib.error
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
@@ -153,6 +155,61 @@ class PreservationTests(unittest.TestCase):
             self.assertEqual(len(list(source_utils.entries(output))), 2)
             self.assertIn('[Geo-blocked]', output)
             self.assertIn('http-referrer', output)
+
+
+class DiagnosticDetailTests(unittest.TestCase):
+    """Reports must say why a source needs attention, not only its exception name."""
+
+    def test_empty_response_is_invalid_for_every_kind(self):
+        for expected in ('config', 'playlist', 'media'):
+            with self.subTest(expected=expected):
+                self.assertEqual(source_utils.classify('  \n', expected), ('invalid', 'empty response body'))
+
+    def test_malformed_json_is_reported_as_malformed(self):
+        # Raw newline inside a string: typed JSON that strict parsers reject.
+        value = '{"sites":[{"key":"k","name":"n","api":"a","type":3,"note":"优\n酷"}]}'
+        status, detail = source_utils.classify(value, 'config')
+        self.assertEqual(status, 'unverified_format')
+        self.assertIn('malformed JSON', detail)
+
+    def test_encoded_payload_is_described_as_encoded(self):
+        status, detail = source_utils.classify('2' * 512, 'config')
+        self.assertEqual(status, 'unverified_format')
+        self.assertIn('encoded payload', detail)
+
+    def test_plain_text_stays_unverified_not_json(self):
+        status, detail = source_utils.classify('encrypted-content', 'config')
+        self.assertEqual(status, 'unverified_format')
+        self.assertIn('not JSON', detail)
+
+    def test_html_is_still_invalid(self):
+        self.assertEqual(source_utils.classify('<html>error</html>', 'config')[0], 'invalid')
+
+    def test_http_error_detail_includes_status_code(self):
+        error = urllib.error.HTTPError('https://example.org/x', 403, 'Forbidden', {}, None)
+        with patch.object(check_sources, 'download', side_effect=error):
+            row = check_sources.probe(('Example', 'https://example.org/x', 'config'))
+        self.assertEqual((row['status'], row['detail']), ('unreachable', 'HTTP 403'))
+
+    def test_dns_and_timeout_details_are_explicit(self):
+        with patch.object(check_sources, 'download', side_effect=socket.gaierror(-2, 'no DNS')):
+            row = check_sources.probe(('n', 'https://example.org', 'config'))
+        self.assertEqual(row['detail'], 'DNS resolution failed')
+        with patch.object(check_sources, 'download', side_effect=TimeoutError):
+            row = check_sources.probe(('n', 'https://example.org', 'config'))
+        self.assertIn('timeout after', row['detail'])
+
+    def test_url_error_reason_is_classified(self):
+        error = urllib.error.URLError(socket.gaierror(-2, 'no DNS'))
+        with patch.object(check_sources, 'download', side_effect=error):
+            row = check_sources.probe(('n', 'https://example.org', 'config'))
+        self.assertEqual(row['detail'], 'DNS resolution failed')
+
+    def test_blocked_destination_is_not_unreachable(self):
+        with patch.object(check_sources, 'download', side_effect=ValueError('non-public destination')):
+            row = check_sources.probe(('n', 'https://example.org', 'config'))
+        self.assertEqual(row['status'], 'invalid')
+        self.assertIn('blocked or oversized', row['detail'])
 
 
 if __name__ == '__main__':
