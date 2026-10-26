@@ -1,0 +1,28 @@
+name: security-audit
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Run regression tests
+        run: python -m unittest discover -s tests -v
+      - name: Validate local configuration and playlists
+        run: python scripts/check_sources.py
+      - name: Test the public-secret scanner
+        run: python -m unittest discover -s .github/security -p "test_*.py" -v
+      - name: Scan for high-confidence credentials
+        run: python .github/security/check_public_secrets.py
