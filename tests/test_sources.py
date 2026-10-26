@@ -211,6 +211,14 @@ class DiagnosticDetailTests(unittest.TestCase):
         self.assertEqual(row['status'], 'invalid')
         self.assertIn('blocked or oversized', row['detail'])
 
+    def test_inspector_reports_json_position(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / 'upstream').mkdir()
+            (root / 'config.json').write_text('{"sites": [,]}', encoding='utf-8')
+            errors, _ = check_sources.inspect(root)
+        self.assertTrue(any('invalid JSON at line' in error for error in errors))
+
 
 if __name__ == '__main__':
     unittest.main()
