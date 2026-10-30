@@ -755,6 +755,8 @@ https://play-live-hls.jxtvcn.com.cn/live-city/tv_jxtv4.m3u8
 https://play-live-hls.jxtvcn.com.cn/live-city/tv_jxtv5.m3u8
 #EXTINF:-1 tvg-id="JiangxiTV.cn@SD" tvg-logo="https://i.imgur.com/RrLthH3.png" group-title="国内·Undefined",Jiangxi TV (1080p)
 http://39.134.115.163:8080/PLTV/88888910/224/3221225705/index.m3u8
+#EXTINF:-1 tvg-id="JingmenComprehensiveNewsChannel.cn@SD" tvg-logo="https://www.tvchinese.net/uploads/tv/jmsxwpd.jpg" group-title="国内·News",Jingmen Comprehensive News Channel
+https://stream.jmtv.com.cn/xwzh/sd/live.m3u8?_upt=341f4b8e1791883036
 #EXTINF:-1 tvg-id="JiuquanTVNewsComprehensiveChannel.cn@SD" tvg-logo="https://i.imgur.com/mPkG8Gi.png" group-title="国内·News",Jiuquan TV News Comprehensive Channel (576p)
 http://117.156.28.119/270000001111/1110000001/index.m3u8
 #EXTINF:-1 tvg-id="KangbaTV.cn@SD" tvg-logo="https://www.tvchinese.net/uploads/tv/kangbatv.jpg" group-title="国内·General",Kangba TV
