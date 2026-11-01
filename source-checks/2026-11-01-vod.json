@@ -1,0 +1,75 @@
+{
+  "checked_at": "2026-11-01 12:54:13 UTC",
+  "check_method": "手动直连探测（本机直接 fetch，无代理环境变量）；仅验证配置与 spider 的可下载性和 JSON 结构，未执行扩展、未验证播放。",
+  "sources": [
+    {
+      "name": "544609136 精简仓（54站）",
+      "url": "https://raw.githubusercontent.com/544609136/tvbox/main/cur/vod_slim.json",
+      "origin": "https://github.com/544609136/tvbox",
+      "status": "candidate_passed",
+      "sites": 54,
+      "configuration_sha256": "aed1f3a8642e08bf8fdfc596683471590d4e9ad98d9c29097c2d32cee7578378",
+      "configuration_bytes": 35908,
+      "spider_checked": true,
+      "spider_url": "https://raw.githubusercontent.com/544609136/tvbox/main/cur/spider_special.jar",
+      "spider_http": 200,
+      "extension_checked": false,
+      "extension_executed": false,
+      "playback_verified": false,
+      "note": "已验证配置可下载、JSON 可解析、站点条目存在；未执行扩展、未验证播放。"
+    },
+    {
+      "name": "544609136 完整仓（147站）",
+      "url": "https://raw.githubusercontent.com/544609136/tvbox/main/cur/vod_full.json",
+      "origin": "https://github.com/544609136/tvbox",
+      "status": "candidate_passed",
+      "sites": 147,
+      "configuration_sha256": "6c8d1415210c41cecfa4336efc9824bc80e1dd50ad5640602a55a2c9164f77da",
+      "configuration_bytes": 53828,
+      "spider_checked": true,
+      "spider_url": "https://raw.githubusercontent.com/544609136/tvbox/main/cur/spider_special.jar",
+      "spider_http": 200,
+      "extension_checked": false,
+      "extension_executed": false,
+      "playback_verified": false,
+      "note": "已验证配置可下载、JSON 可解析、站点条目存在；未执行扩展、未验证播放。"
+    },
+    {
+      "name": "聚合精选 ofind（222站）",
+      "url": "https://ofind.cn/juhe-subhub/tvbox.json",
+      "origin": "https://github.com/zhuzhuyule/juhe-subhub",
+      "status": "candidate_passed",
+      "sites": 222,
+      "configuration_sha256": "2398df44735971eab2d163a2e2ec68242f169633ad80b610a5ac0b3c70688bf8",
+      "configuration_bytes": 127840,
+      "spider_checked": true,
+      "spider_url": "https://xiuxiu-pro-new.meitudata.com/posters/c2759c9c03b22f2242475139110972c7.jpg",
+      "spider_http": 200,
+      "extension_checked": false,
+      "extension_executed": false,
+      "playback_verified": false,
+      "note": "已验证配置可下载、JSON 可解析、站点条目存在；未执行扩展、未验证播放。"
+    },
+    {
+      "name": "TVBox-Hub 精选（50站）",
+      "url": "https://raw.githubusercontent.com/sylvan97/tvbox-hub/main/dist/index.json",
+      "origin": "https://github.com/sylvan97/tvbox-hub",
+      "status": "candidate_passed",
+      "sites": 50,
+      "configuration_sha256": "f83ffa08016fb6b3e339d932954b9a59a9fe00afd48aa0c8a6bd94c5b31e7322",
+      "configuration_bytes": 44456,
+      "spider_checked": true,
+      "spider_url": "https://raw.githubusercontent.com/sylvan97/tvbox-hub/main/dist/jar/fan.txt",
+      "spider_http": 200,
+      "extension_checked": false,
+      "extension_executed": false,
+      "playback_verified": false,
+      "note": "已验证配置可下载、JSON 可解析、站点条目存在；未执行扩展、未验证播放。"
+    }
+  ],
+  "notes": [
+    "本轮只向 multi.json 追加条目，未删除、未替换任何历史入口，未改写任何第三方地址。",
+    "站点数为配置条目数，不是实测可播放数量；来源之间可能重复。",
+    "本机 check_sources.py 在 Clash fake-IP 环境下会把公网域名判为 non-public destination，本次改用直连探测，结论以本文件为准。"
+  ]
+}

@@ -16,7 +16,7 @@ https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi-vod
 
 ### 📦 完整合集
 
-`multi.json` 里包含 19 个仓库入口，保留了之前收集的老仓库，也加入了一些新来源。想自己多试几个仓库，可以选这个。
+`multi.json` 里包含 23 个仓库入口，保留了之前收集的老仓库，也加入了一些新来源。想自己多试几个仓库，可以选这个。
 
 ```text
 https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi.json
@@ -91,4 +91,4 @@ https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-conf
 
 想了解来源和维护方式，可以看看：
 
-[来源及检测记录](SOURCES.md) · [更新与维护说明](MAINTENANCE.md) · [安全说明](SECURITY.md)
+[来源及检测记录](SOURCES.md) · [更新与维护说明](MAINTENANCE.md)
