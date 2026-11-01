@@ -79,7 +79,6 @@ def probe(target):
         # network failure and must not be reported as unreachable.
         status, detail = 'invalid', f'blocked or oversized response ({exc})'
     except (OSError, urllib.error.URLError, http.client.HTTPException) as exc:
-        # Do not expose stream tokens, payloads or exception URLs in public logs.
         status, detail = 'unreachable', describe_failure(exc)
     return {'name': name, 'kind': expected, 'status': status, 'detail': detail}
 

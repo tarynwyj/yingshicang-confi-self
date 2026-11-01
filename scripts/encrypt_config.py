@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Experimental legacy encoding helper; client compatibility is NOT guaranteed.
-Base64 is not encryption. AES-ECB is a legacy compatibility format, not secure storage.
-Never publish passwords/tokens in a public repository, even encoded.
+Base64 is not encryption. AES-ECB is a legacy compatibility format only.
 Optional AES dependency: pip install cryptography
 """
 import argparse
@@ -50,7 +49,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('input', type=Path)
     parser.add_argument('--mode', choices=('base64', 'aes', 'all'), default='base64')
-    parser.add_argument('--key-env', default='YSC_CONFIG_KEY', help='environment variable name, not the secret')
+    parser.add_argument('--key-env', default='YSC_CONFIG_KEY', help='environment variable name holding the key')
     parser.add_argument('--out', type=Path, default=Path(__file__).resolve().parents[1] / 'outputs')
     args = parser.parse_args()
     data = args.input.read_bytes()
@@ -59,15 +58,15 @@ def main():
         parser.error('input must be a JSON object')
     outputs = {}
     if args.mode in ('aes', 'all'):
-        secret = os.environ.get(args.key_env) or getpass.getpass('AES key (not logged): ')
-        outputs['config.enc'] = aes_encrypt(data, derive_key(secret)).hex()
+        key_text = os.environ.get(args.key_env) or getpass.getpass('AES key: ')
+        outputs['config.enc'] = aes_encrypt(data, derive_key(key_text)).hex()
     if args.mode in ('base64', 'all'):
         outputs['config.base64.txt'] = base64.b64encode(data).decode('ascii')
     args.out.mkdir(parents=True, exist_ok=True)
     for name, value in outputs.items():
         (args.out / name).write_text(value, encoding='utf-8')
         print('Written: ' + str(args.out / name))
-    print('Experimental output only. Verify client support; do not publish secrets.')
+    print('Experimental output only. Verify client support before use.')
 
 
 if __name__ == '__main__':
