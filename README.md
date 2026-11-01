@@ -1,71 +1,94 @@
-# 影视仓 / TVBox 配置订阅
+# 📺 我的影视仓配置
 
-个人维护的影视仓（TVBox 系）配置订阅合集：**点播多仓**、**完整多仓**与**直播配置**，适用于部分兼容的影视仓 / TVBox 客户端。
+平时自己用影视仓时，整理了一些电影、电视剧和电视直播的配置地址，顺手放在 GitHub 上，方便自己更新，也分享给有需要的人。
 
-配置内容来自第三方项目，本仓库只做结构校验与自动更新；**实际可用性取决于来源与客户端**。
+**不需要下载整个仓库，复制下面的配置地址，在支持的影视仓 / TVBox 客户端里导入就行。**
 
-> 本仓库不是影视仓 / TVBox 客户端，也不提供片源或授权。请只使用你有权访问的资源；公开可访问不代表获得授权。配置经过结构与连接检查，**不保证所有来源都能正常播放**。
+## 📌 配置地址
 
-## 快速开始
+### 🎬 电影、电视剧（推荐先试）
 
-### 1. 选择订阅地址
-
-**点播多仓** · 8 个来源 · 适合主要看电影、电视剧的用户（推荐先试）
+整理了 8 个点播来源，放在 `multi-vod.json`，适合平时主要看电影、电视剧的朋友。
 
 ```text
 https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi-vod.json
 ```
 
-**完整多仓** · 19 个入口 · 保留全部历史仓库，适合自己切换仓库的用户
+### 📦 完整合集
+
+`multi.json` 里包含 19 个仓库入口，保留了之前收集的老仓库，也加入了一些新来源。想自己多试几个仓库，可以选这个。
 
 ```text
 https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi.json
 ```
 
-**直播配置** · 6 个直播列表 · 只含直播，不含电影电视剧点播站点
+### 📡 电视直播
+
+只想看电视直播的话，用 `config.json` 就够了。里面有 6 个直播列表，包括央视卫视、国内及香港频道，也有一个测试用的列表。部分频道对网络有要求，不保证全部能播。
 
 ```text
 https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/config.json
 ```
 
-其他入口：
+另外两个入口，按需使用：
 
-| 用途 | 地址 |
-|---|---|
-| 连接测试（Apple HLS 测试视频，不是电视频道） | `https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/config-test.json` |
-| 聚合直播 M3U（用于直播地址输入） | `https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/upstream/all.m3u` |
+- 连接测试：`https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/config-test.json`（里面是 Apple 的 HLS 测试视频，用来确认客户端能不能正常加载配置）
+- 聚合直播 M3U：`https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/upstream/all.m3u`（有些客户端需要 M3U 格式的直播地址）
 
-GitHub 原始地址访问不稳定时，可换用同一文件的 CDN 或代理地址：
+## 🛠️ 怎么导入？
+
+1. 打开你在用的影视仓 / TVBox 客户端，找到「配置」或「多仓 / 仓库管理」入口。
+2. 复制上面的地址，粘贴进去，加载。
+3. 如果导入的是多仓配置，加载后还要在仓库列表里选一个具体仓库。
+
+**注意：** 前两个地址是多仓合集，需要在支持「多仓」的入口里导入。如果粘到普通单仓配置框里加载不了，不一定是地址坏了。
+
+不同版本的客户端，设置入口可能不太一样。
+
+## 🌐 地址打不开怎么办？
+
+GitHub 的原始地址在部分网络下可能访问不了，可以试试备用地址。
+
+**点播合集 CDN 地址：**
 
 ```text
 https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/multi-vod.json
+```
+
+**点播合集代理地址：**
+
+```text
 https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi-vod.json
 ```
 
-CDN 和客户端都可能缓存旧内容；没有承诺即时刷新，也不要把固定提交地址当作日常更新入口。
+其他文件也可以这样替换：把 `https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/` 换成 `https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/`。备用地址也可能受网络或缓存影响。
 
-> **多仓不等于单仓。** `multi-vod.json` 与 `multi.json` 是 `urls` 多仓结构；粘到普通单仓配置框里通常无法加载。需要在客户端中找到「多仓 / 仓库管理」入口导入，再选择具体仓库。`config.json` 才是单仓直播配置。
+## ❓ 遇到问题？
 
-### 2. 在客户端导入
+**导入成功了，却没有电影电视剧？**
 
-1. 打开兼容客户端，进入「配置 / 多仓 / 仓库管理」入口（不同客户端菜单名不同）。
-2. 粘贴上表地址（**不是** GitHub 网页地址），保存并加载。
-3. 加载成功后选择具体仓库或直播源。能加载配置不代表所有频道都能播放。
+先看看是不是用了直播配置——直播配置里没有点播站点；多仓配置则需要在仓库列表里选一个具体仓库。
 
-### 3. 常见问题
+**能看到影片，但播放不了？**
 
-| 现象 | 处理 |
-|---|---|
-| 配置拉取失败 | 确认地址类型与入口匹配；检查该设备的网络、DNS、系统时间和应用版本；换 CDN / 代理地址再试 |
-| 能拉配置但没有电影电视剧 | 确认加载的是哪种配置：`config.json` 没有点播；多仓需要在多仓入口里再选择具体仓库 |
-| 频道显示但播放失败 | 可能是 IPv6、运营商或地区限制、签名过期、来源失效；换线路或换来源，不要清空仓库 |
-| 内容没有更新 | 客户端或 CDN 缓存；在应用内刷新配置，清理缓存前先记录自己的设置 |
+可以换一个站点或者线路试试。第三方来源偶尔会失效，也可能受网络、地区或播放方式限制。
 
-## 说明与边界
+**配置一直加载不出来？**
 
-- **来源与检测记录**：[SOURCES.md](SOURCES.md) —— 来源清单、维护者与当前外部警告。
-- **自动更新与维护**：[MAINTENANCE.md](MAINTENANCE.md) —— 更新流程、检查逻辑与回退。
-- **公开仓库安全**：[SECURITY.md](SECURITY.md) —— 凭据、签名播放地址与提交邮箱。
-- 自动更新成功、配置结构检查通过，都不等于频道可播放；播放验证只能在设备上完成。
-- 不托管或执行第三方 JAR / 扩展；第三方来源的可用性不在本项目保证范围内。
-- 历史入口与频道不会因为一次检测失败而被删除；订阅地址保持稳定。
+先检查地址有没有复制完整，再确认客户端是否支持这种配置格式，也可以换个备用地址试试。
+
+**怎么还是旧内容？**
+
+在客户端里重新加载一次配置。部分客户端和 CDN 会缓存之前的内容。
+
+## ❤️ 关于这个仓库
+
+这是我个人整理和维护的配置合集，不是影视仓播放器，也不托管影视内容。
+
+第三方来源可能随时变化。我会保留历史配置，不会因为偶尔连接失败就直接删掉。仓库里的自动检查主要用来发现配置和连接问题，不能代替真实播放测试。
+
+请根据自己的客户端和网络情况选择配置，并只访问你有权使用的内容。
+
+想了解来源和维护方式，可以看看：
+
+[来源及检测记录](SOURCES.md) · [更新与维护说明](MAINTENANCE.md) · [安全说明](SECURITY.md)
