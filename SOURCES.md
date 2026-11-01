@@ -59,7 +59,13 @@
 `check_sources.py` 只读源文件，只写独立健康报告；校验完整和点播多仓，支持 JSONC；空响应记为 `invalid`，编码载荷与非严格 JSON 分别归类；没有自动删源模式。
 `sync_sources.py` 下载并验证上游，保护旧列表。
 工作流每天北京时间 11:20 计划执行，重新生成列表并仅提交限定输出文件；报告异常不删除用户来源。每次运行在 Actions 的 Summary 按来源列出类别与建议，完整 JSON 报告保留 30 天。
-完整使用说明与缓存、设备验证边界见 README。
+使用说明见 [README.md](README.md)，维护细节与检查器状态见 [MAINTENANCE.md](MAINTENANCE.md)。
+
+## 检查记录
+
+- [2026-10-01 点播来源检查](source-checks/2026-10-01-vod.json)
+- [2026-10-09 点播来源检查](source-checks/2026-10-09-vod.json)
+- 每次运行的结构与联网检查结果，见该次 Actions 运行的 Summary 与 `source-reports-运行编号` 附件（保留 30 天）。
 
 ## 2026-10-09 检测补充
 

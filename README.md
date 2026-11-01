@@ -1,119 +1,94 @@
-# 影视仓配置与来源维护
+# 📺 我的影视仓配置
 
-本仓库区分 **多仓入口、直播配置、连接测试**。列表存在、内容能下载与实际能播放是三件不同的事。只使用你有权访问的资源；公开可访问不代表获得授权。
+平时自己用影视仓时，整理了一些电影、电视剧和电视直播的配置地址，顺手放在 GitHub 上，方便自己更新，也分享给有需要的人。
 
-公开仓库的敏感信息处理、签名播放地址和提交邮箱注意事项见 [SECURITY.md](SECURITY.md)。
+**不需要下载整个仓库，复制下面的配置地址，在支持的影视仓 / TVBox 客户端里导入就行。**
 
-## 你要用哪个地址
+## 📌 配置地址
 
-**优先测试点播，请导入本次筛选的点播多仓（8 个来源）：**
+### 🎬 电影、电视剧（推荐先试）
+
+整理了 8 个点播来源，放在 `multi-vod.json`，适合平时主要看电影、电视剧的朋友。
 
 ```text
 https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi-vod.json
 ```
 
-代理备用地址（本轮已读取到新清单）：
+### 📦 完整合集
 
-```text
-https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi-vod.json
-```
-
-2026-10-01 加入 Qist 自用点播、饭太硬（Qist维护）、潇洒（Qist维护）、高天流云 PG、高天流云 FTY、Gaoops点播。测试范围为配置下载、点播站点结构、扩展地址及文件头；实际搜索和播放待设备验证。证据见 [2026-10-01 来源检查](source-checks/2026-10-01-vod.json)。
-
-2026-10-09 新增 Ray（dxawi）和王二小（维护镜像），分别读取到 48、63 个站点条目；配置与主扩展通过检查，Ray 的相对路径脚本已确认存在。站点条目数不等于实测播放数量。详情见 [2026-10-09 来源检查](source-checks/2026-10-09-vod.json)。
-
-**要保留所有历史仓库并同时使用新增来源，请导入完整多仓（19 个入口）：**
+`multi.json` 里包含 19 个仓库入口，保留了之前收集的老仓库，也加入了一些新来源。想自己多试几个仓库，可以选这个。
 
 ```text
 https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi.json
 ```
 
-同一份完整多仓的代理备用地址：
+### 📡 电视直播
+
+只想看电视直播的话，用 `config.json` 就够了。里面有 6 个直播列表，包括央视卫视、国内及香港频道，也有一个测试用的列表。部分频道对网络有要求，不保证全部能播。
 
 ```text
-https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi.json
+https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/config.json
 ```
 
-找到你的影视仓版本中支持“多仓/仓库管理”的入口导入，再选择具体仓库。不同版本菜单不同，不能保证普通配置输入框支持多仓。进入“我的直播配置（无点播）”只会得到直播列表，不会自动出现电影电视剧站点。其他历史条目均保留，不因检测失败删除。
+另外两个入口，按需使用：
 
-| 用途 | 原始地址 |
-|---|---|
-| 直播配置（没有点播站点） | https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/config.json |
-| 单独连接测试配置 | https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/config-test.json |
-| 聚合直播 M3U（用于直播地址输入） | https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/upstream/all.m3u |
+- 连接测试：`https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/config-test.json`（里面是 Apple 的 HLS 测试视频，用来确认客户端能不能正常加载配置）
+- 聚合直播 M3U：`https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/upstream/all.m3u`（有些客户端需要 M3U 格式的直播地址）
 
-其他文件也可用同路径的 CDN 地址：把前缀替换为 `https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/`。
-配置内的自有列表链接沿用 CDN 主分支地址，避免原始域名在部分网络不可达；CDN 和客户端都可能缓存旧内容。没有承诺即时刷新，也不要把固定提交地址当作日常更新入口。
+## 🛠️ 怎么导入？
 
-## “配置拉取失败”排查顺序
+1. 打开你在用的影视仓 / TVBox 客户端，找到「配置」或「多仓 / 仓库管理」入口。
+2. 复制上面的地址，粘贴进去，加载。
+3. 如果导入的是多仓配置，加载后还要在仓库列表里选一个具体仓库。
 
-1. 确认导入的是对应类型的完整网址，而不是 GitHub 网页地址。
-2. 用测试配置加载 Apple HLS 测试视频（它是测试视频，不是电视频道）。
-3. 测试配置也拉取失败：在同一台设备打开同一网址，检查网络、DNS、系统时间和应用版本；电脑可访问不代表电视可访问。
-4. 能拉配置但没有点播：检查是否选中了“我的直播配置（无点播）”，以及是否实际导入了多仓。
-5. 能看到频道但播放失败：检查该频道及播放依赖；IPv6、运营商、地区限制、签名过期都会影响结果。不要因此清空仓库。
-6. 缓存导致显示旧内容时，在应用内刷新配置；只清理相关配置缓存前先记录自己的设置。
+**注意：** 前两个地址是多仓合集，需要在支持「多仓」的入口里导入。如果粘到普通单仓配置框里加载不了，不一定是地址坏了。
 
-## 自动维护：更新与检测分开
+不同版本的客户端，设置入口可能不太一样。
 
-每天 UTC 03:20（北京时间 11:20）及相关文件推送后运行 GitHub Actions；计划任务可能延迟。可在 Actions 中手动运行 `update-and-check`。
+## 🌐 地址打不开怎么办？
 
-- 先运行回归测试、校验主配置、测试配置、多仓和所有本地 M3U。
-- 按 `scripts/upstreams.json` 的原有四个上游同步。下载先验证，空列表、错误网页、超时不会覆盖旧文件。
-- 新旧列表合并：优先采用新条目，但保留上游消失的历史 URL 和播放参数。不会自动清除失效、过期或地域限制条目；重复 URL 加相同播放参数才去重，因此列表可能逐渐增长。
-- 重建域名精选、完整聚合列表。精选只是域名筛选，**不是“官方授权/电信必能播放”的保证**。
-- 自动提交仅限六个 `upstream/*.m3u` 输出，不会改写 `multi.json`、`config.json` 或 `live.m3u`。Git 历史保留之前版本；不强推。
-- 联网检测默认执行，覆盖完整多仓、点播多仓和配置入口。手动运行时可勾选 check_streams 检查全部频道清单。HTTP 200 的 HTML 与空响应判为无效；支持 JSON 注释和尾逗号；编码载荷与非严格 JSON 分别标注为待验证。不会执行下载的 JAR、脚本，也不会抓取所有视频分片。
-- 外部源超时、域名失效、特殊格式和上游下载失败仅生成警告，保留旧数据，正常完成维护；不会因同一批旧源每天触发任务失败邮件。程序崩溃、配置损坏、测试失败、报告损坏、文件写入失败或发布失败仍会使任务失败。每次运行的 **Summary** 会按来源列出类别、详情与建议操作，完整 JSON 见 `source-reports-运行编号` 附件（保留 30 天）。绿色仅表示维护流程正常，不表示每个来源能播放。
+GitHub 的原始地址在部分网络下可能访问不了，可以试试备用地址。
 
-## 状态、退出码与报告
-
-| 状态 | 含义 | 建议 |
-|---|---|---|
-| `content_ok` | 结构符合本检查范围，**不代表能播放** | 无需处理；播放仍需设备实测 |
-| `unverified_format` | 编码载荷或客户端特有格式，通用解析无法判定 | 在影视仓客户端实测；不要据此删除来源 |
-| `invalid` | 空响应、错误页或结构不合法 | 核对上游地址与返回内容 |
-| `unreachable` | 本次网络不可达，详情写明 DNS/超时/HTTP 状态码 | 检查域名与网络后重试；可能只是暂时不可达 |
-| `kept_previous` | 同步失败或内容无效，旧文件已保留 | 确认上游状态后重试 |
-
-退出码：`0` 结构校验通过（未联网）或没有来源需要关注；`2` 联网检查有来源需要关注（只警告，不改源）；`1` 结构或程序错误。任何状态都不会自动删除来源或改写配置。
-
-## 本地检查
-
-需要 Python 3.12；除 `encrypt_config.py` 的 AES 模式需另装 `cryptography` 外，维护脚本和测试仅使用标准库。
+**点播合集 CDN 地址：**
 
 ```text
-python -m unittest discover -s tests -v
-python scripts/check_sources.py
-python scripts/build_tel.py
-python scripts/build_all.py
-python scripts/check_sources.py --network
-python scripts/check_sources.py --network --streams
+https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/multi-vod.json
 ```
 
-`sync_sources.py` 会改写 `upstream/*.m3u`，`build_tel.py` / `build_all.py` 会改写生成的列表。验证同步逻辑时，请把仓库复制到临时目录、在副本里执行；不要在正式工作树里直接运行 `sync_sources.py`。
+**点播合集代理地址：**
 
-`--streams` 检查所有去重后的频道清单，可能花数分钟；不验证解码、授权或所有分片。检测报告写入忽略版本控制的 `reports/`，不会包含完整带令牌 URL。`--network` 走直连（脚本显式忽略代理环境变量），本机必须能直连目标地址；否则会表现为大量 `unreachable`，那是本机网络限制而不是来源永久失效。
-
-## 自有频道、媒体库及扩展
-
-`live.m3u` 是手工维护文件，目前只有 Apple 测试视频。添加有权使用的真实频道时，保留 M3U 头部，再添加：
-
-```m3u
-#EXTINF:-1 group-title="自有频道",频道名称
-https://example.com/authorized-stream.m3u8
+```text
+https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi-vod.json
 ```
 
-示例地址不能播放，请替换为实际地址。不要将私有播放凭据上传到公开仓库。自有局域网服务不会通过公网检测，需在设备所在网络单独测试。
+其他文件也可以这样替换：把 `https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/` 换成 `https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/`。备用地址也可能受网络或缓存影响。
 
-Jellyfin / Emby / Alist 尚未接入：需要真实地址、应用版本和受支持的接口/插件。不会恢复指向电视自身的 `127.0.0.1` 占位项。请在支持的客户端本地配置凭据，而不是放进公开 JSON。
+## ❓ 遇到问题？
 
-本仓库不托管或执行第三方 JAR。外部仓库自己的扩展不在本项目的可用性保证范围内。
+**导入成功了，却没有电影电视剧？**
 
-`encrypt_config.py` 仅保留实验性编码工具。Base64 不是加密；AES-ECB 是旧兼容格式，不适合安全保存秘密，且没有消息认证。工具不打印密钥，使用隐藏输入或环境变量 `YSC_CONFIG_KEY`；AES 需另装 `cryptography`。**未验证你的客户端能导入这些输出**，不要拿加密格式代替排查普通 JSON 连接。
+先看看是不是用了直播配置——直播配置里没有点播站点；多仓配置则需要在仓库列表里选一个具体仓库。
 
-## 历史与回退
+**能看到影片，但播放不了？**
 
-首次修复前基线：`85e48661ae35465c7955b5a8b11be574e39d35e3`。2026-10-09 精简时移除了不再使用的旧配置备份和本轮一次性候选筛选工具；精简前版本为 `f60bc8bcfcb9e2f438f607aa7561dbce96664203`，旧文件仍可从该版本恢复。现用订阅文件、来源清单与已完成的来源检查记录均保留。回退时按文件选择 Git 历史，不覆盖其他新改动。
+可以换一个站点或者线路试试。第三方来源偶尔会失效，也可能受网络、地区或播放方式限制。
 
-具体修复与验证边界见 [MAINTENANCE.md](MAINTENANCE.md)。来源维护地址见 [SOURCES.md](SOURCES.md)。
+**配置一直加载不出来？**
+
+先检查地址有没有复制完整，再确认客户端是否支持这种配置格式，也可以换个备用地址试试。
+
+**怎么还是旧内容？**
+
+在客户端里重新加载一次配置。部分客户端和 CDN 会缓存之前的内容。
+
+## ❤️ 关于这个仓库
+
+这是我个人整理和维护的配置合集，不是影视仓播放器，也不托管影视内容。
+
+第三方来源可能随时变化。我会保留历史配置，不会因为偶尔连接失败就直接删掉。仓库里的自动检查主要用来发现配置和连接问题，不能代替真实播放测试。
+
+请根据自己的客户端和网络情况选择配置，并只访问你有权使用的内容。
+
+想了解来源和维护方式，可以看看：
+
+[来源及检测记录](SOURCES.md) · [更新与维护说明](MAINTENANCE.md) · [安全说明](SECURITY.md)
