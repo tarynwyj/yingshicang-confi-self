@@ -75,6 +75,22 @@
     {
       "name": "王二小（维护镜像）",
       "url": "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/wangerxiao.json"
+    },
+    {
+      "name": "544609136 精简仓（54站）",
+      "url": "https://raw.githubusercontent.com/544609136/tvbox/main/cur/vod_slim.json"
+    },
+    {
+      "name": "544609136 完整仓（147站）",
+      "url": "https://raw.githubusercontent.com/544609136/tvbox/main/cur/vod_full.json"
+    },
+    {
+      "name": "聚合精选 ofind（222站）",
+      "url": "https://ofind.cn/juhe-subhub/tvbox.json"
+    },
+    {
+      "name": "TVBox-Hub 精选（50站）",
+      "url": "https://raw.githubusercontent.com/sylvan97/tvbox-hub/main/dist/index.json"
     }
   ]
 }
