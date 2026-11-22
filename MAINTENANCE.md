@@ -87,13 +87,15 @@ Jellyfin / Emby / Alist 尚未接入：需要真实地址、应用版本和受�
 
 ## 变更记录
 
-### 2026-11-22：gh-proxy.com 停止转发，15 条代理地址改为 jsDelivr
+### 2026-11-22：gh-proxy.com 停止转发；多仓改走 ghproxy.net，清理失效入口并新增 5 个来源
 
 - 现象：`gh-proxy.com` 对任意目标的代理请求均返回 HTTP 403（`Access to proxy rules is forbidden on this hostname: gh-proxy.com`），站点首页仍 200，故“网站能打开”不能作为代理可用的判据；经第三方服务端抓取复现，与本机网络无关。
-- 影响：`multi-vod.json` 8 项中 5 项、`multi.json` 23 项中 10 项失效；直播配置 `config.json`（走 jsDelivr）不受影响。
-- 处理：**经仓库所有者确认的一次性地址迁移**，仅替换代理前缀为等价 jsDelivr 地址，上游 owner/repo/分支/路径全部保持原样；README 的备用代理示例 `gh-proxy.com` 改为 `ghproxy.net`。这是对“不替换第三方域名”契约的显式例外，后续维护不再默认改写第三方地址。
-- 验证：15 条新地址当日 HTTP 200；`multi-vod.json` 8/8、`multi.json` 19/23 可读（其余 4 条为肥猫 521、饭太硬连接失败、欧歌 403、王二小 504，均为原有多仓失效入口）；`check_sources.py` 结构校验退出 0；回归测试 55 项通过。未验证播放。
-- 注意：jsDelivr 对 `@分支` 有缓存（通常数小时至 12 小时），影响上游配置更新可见延迟；如需实时内容可换回自建/其他代理。
+- 影响：迁移前 `multi-vod.json` 8 项中 5 项、`multi.json` 23 项中 10 项失效；直播配置 `config.json`（走 jsDelivr）不受影响。
+- 代理前缀：先临时改为 jsDelivr，按所有者要求最终统一改走 `ghproxy.net`（`https://ghproxy.net/<原始 raw 地址>`）。上游 owner/repo/分支/路径一律未改。这是对“不替换第三方域名”契约的显式例外，后续维护不再默认改写第三方地址。
+- 清理：删除实测长期失效的 4 个入口——肥猫（Cloudflare 521）、饭太硬（旧域名 `fty.xxooo.cf` 连接失败）、欧歌4K（HTTP 403）、王二小（网页入口 HTTP 504）。王二小的 `raw` 维护镜像入口保留，覆盖面不损失。
+- 新增 5 个当日实测可读、`spider` 可下载的来源：544609136 合并仓（777 站）、Qist 综合仓 163 站、Qist 0821 整合仓 86 站、Jinenge 内置源 59 站（自带直播与 jar）、TVBox-Hub 轻量 20 站。`multi.json` 23 → 24 项，`multi-vod.json` 8 → 11 项。
+- 验证：24 条地址逐条 HTTP 200；`sites` 计数与 `spider` 下载（含 18 MB 的 `spider_special.jar`）通过；`check_sources.py` 结构校验退出 0；回归测试 55 项通过。**未执行 JAR、未验证播放**。
+- 注意：`ghproxy.net` 首次拉取大文件可能较慢或偶发 5xx，重试即可；jsDelivr 对 `@分支` 有缓存（数小时至 12 小时），本仓库自用 CDN 地址可能延迟可见。
 
 ### 2026-11-01：多仓新增 4 个单仓（19 → 23）
 

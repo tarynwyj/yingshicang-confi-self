@@ -8,7 +8,7 @@
 
 ### 🎬 电影、电视剧（推荐先试）
 
-整理了 8 个点播来源，放在 `multi-vod.json`，适合平时主要看电影、电视剧的朋友。
+整理了 11 个点播来源，放在 `multi-vod.json`，适合平时主要看电影、电视剧的朋友。都是 2026-11-22 实测能打开、依赖文件能下载的仓。
 
 ```text
 https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi-vod.json
@@ -16,7 +16,7 @@ https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi-vod
 
 ### 📦 完整合集
 
-`multi.json` 里包含 23 个仓库入口，保留了之前收集的老仓库，也加入了一些新来源。想自己多试几个仓库，可以选这个。
+`multi.json` 里包含 24 个仓库入口，保留了之前收集的老仓库，也加入了一些新来源。想自己多试几个仓库，可以选这个。失效的老入口（肥猫、饭太硬旧域名、欧歌4K、王二小网页入口）已经清掉。
 
 ```text
 https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi.json

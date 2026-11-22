@@ -2,35 +2,47 @@
   "urls": [
     {
       "name": "Qist 自用点播",
-      "url": "https://cdn.jsdelivr.net/gh/qist/tvbox@master/jsm.json"
+      "url": "https://ghproxy.net/https://raw.githubusercontent.com/qist/tvbox/master/jsm.json"
     },
     {
       "name": "饭太硬（Qist维护）",
-      "url": "https://cdn.jsdelivr.net/gh/qist/tvbox@master/fty.json"
+      "url": "https://ghproxy.net/https://raw.githubusercontent.com/qist/tvbox/master/fty.json"
     },
     {
       "name": "潇洒（Qist维护）",
-      "url": "https://cdn.jsdelivr.net/gh/qist/tvbox@master/xiaosa/api.json"
+      "url": "https://ghproxy.net/https://raw.githubusercontent.com/qist/tvbox/master/xiaosa/api.json"
     },
     {
       "name": "高天流云 PG",
-      "url": "https://raw.githubusercontent.com/gaotianliuyun/gao/master/0825.json"
+      "url": "https://ghproxy.net/https://raw.githubusercontent.com/gaotianliuyun/gao/master/0825.json"
     },
     {
       "name": "高天流云 FTY",
-      "url": "https://cdn.jsdelivr.net/gh/gaotianliuyun/gao@master/0826.json"
+      "url": "https://ghproxy.net/https://raw.githubusercontent.com/gaotianliuyun/gao/master/0826.json"
     },
     {
       "name": "Gaoops点播",
-      "url": "https://cdn.jsdelivr.net/gh/mrgaoshuiquan/tvbox-config@main/tvbox.json"
+      "url": "https://ghproxy.net/https://raw.githubusercontent.com/mrgaoshuiquan/tvbox-config/main/tvbox.json"
     },
     {
       "name": "Ray（dxawi）",
-      "url": "https://raw.githubusercontent.com/dxawi/0/main/0.json"
+      "url": "https://ghproxy.net/https://raw.githubusercontent.com/dxawi/0/main/0.json"
     },
     {
       "name": "王二小（维护镜像）",
-      "url": "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/wangerxiao.json"
+      "url": "https://ghproxy.net/https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/wangerxiao.json"
+    },
+    {
+      "name": "544609136 合并仓（777站，含网盘/P2P）",
+      "url": "https://ghproxy.net/https://raw.githubusercontent.com/544609136/tvbox/main/cur/combo.json"
+    },
+    {
+      "name": "Qist 综合仓（163站）",
+      "url": "https://ghproxy.net/https://raw.githubusercontent.com/qist/tvbox/master/dianshi.json"
+    },
+    {
+      "name": "Jinenge 内置源（59站）",
+      "url": "https://jinenge.us.kg/app/tvbox/tvbox.json"
     }
   ]
 }

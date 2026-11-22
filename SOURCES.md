@@ -17,39 +17,38 @@
 
 ## 多仓
 
-`multi.json` 共 23 个入口（2026-11-01 追加 4 个单仓；历史 19 个入口全部保留，未删除、未替换）。`multi-vod.json` 为 8 个点播来源的独立清单：10 月 1 日加入 6 个，10 月 9 日加入 Ray 和王二小维护镜像。历史第三方地址保持原样，自有直播配置已明确“无点播”。不根据一次检测删除或替换第三方域名。完整入口清单见下文「完整多仓入口」。
+`multi.json` 共 24 个入口（2026-11-01 追加入口后经 2026-11-22 清理与扩充：删除 4 个长期失效入口，新增 5 个实测可读的来源）。`multi-vod.json` 为 11 个点播来源的独立清单，面向“先试一个能用的仓”。完整入口清单见下表。
 
-2026-11-22：原 15 条 `gh-proxy.com` 代理地址全部返回 HTTP 403（`Access to proxy rules is forbidden on this hostname: gh-proxy.com`，任意目标仓库同样如此，站点首页仍正常打开），该代理已停止转发。**只替换了代理前缀**，改为等价 jsDelivr 地址（`cdn.jsdelivr.net/gh/<owner>/<repo>@<branch>/<path>`），上游仓库、分支与文件路径一律未改；表内“2026-11-01 观察”列仍为当次原始记录，不代表新地址的当前状态。新地址当日实测：15 条全部 HTTP 200，`multi-vod.json` 8/8、`multi.json` 19/23 可读；其余 4 条（肥猫 521、饭太硬、欧歌、王二小）为原有多仓失效入口，与本次代理故障无关。
+2026-11-22：① 原 15 条 `gh-proxy.com` 代理地址全部返回 HTTP 403（`Access to proxy rules is forbidden on this hostname: gh-proxy.com`，任意目标仓库同样如此，站点首页仍正常打开），该代理已停止转发，配置里的地址统一改走 `ghproxy.net` 代理前缀；② 删除实测长期失效的 4 个入口：肥猫（Cloudflare 521）、饭太硬（旧域名 `fty.xxooo.cf` 无法连接）、欧歌4K（HTTP 403）、王二小（网页入口 HTTP 504，原 `raw` 镜像入口保留）；③ 新增 5 个当日实测可读、spider 可下载的来源。上游 owner/repo/分支/路径不变，只调整代理前缀与条目集合。
 
-| # | 入口 | 地址 | 2026-11-01 观察 |
+判定口径：配置 HTTP 200、JSON 可解析（含注释/尾逗号容忍）、`sites` 条目数、`spider` 可下载；**未执行 JAR、未验证播放**。`ghproxy.net` 首次拉取大文件可能较慢或偶发 5xx，重试即可，不代表来源失效。
+
+| # | 入口 | 地址 | 2026-11-22 观察 |
 |---|---|---|---|
-| 1 | Qist 自用点播 | https://cdn.jsdelivr.net/gh/qist/tvbox@master/jsm.json | 可读（156 站） |
-| 2 | 饭太硬（Qist维护） | https://cdn.jsdelivr.net/gh/qist/tvbox@master/fty.json | 可读（48 站） |
-| 3 | 潇洒（Qist维护） | https://cdn.jsdelivr.net/gh/qist/tvbox@master/xiaosa/api.json | 可读（110 站） |
-| 4 | 高天流云 PG | https://raw.githubusercontent.com/gaotianliuyun/gao/master/0825.json | 可读（135 站） |
-| 5 | 高天流云 FTY | https://cdn.jsdelivr.net/gh/gaotianliuyun/gao@master/0826.json | 可读（51 站） |
-| 6 | Gaoops点播 | https://cdn.jsdelivr.net/gh/mrgaoshuiquan/tvbox-config@main/tvbox.json | 可读（52 站） |
-| 7 | 我的直播配置（无点播） | https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/config.json | 直播配置（0 点播站点） |
-| 8 | 高天流云-js | https://cdn.jsdelivr.net/gh/gaotianliuyun/gao@master/js.json | 可读（298 站） |
-| 9 | 高天流云-XYQ | https://cdn.jsdelivr.net/gh/gaotianliuyun/gao@master/XYQ.json | 非 JSON（待验证） |
-| 10 | 香雅情 | https://cdn.jsdelivr.net/gh/xyq254245/xyqonlinerule@main/XYQTVBox.json | 非 JSON（待验证） |
-| 11 | 南风 | https://cdn.jsdelivr.net/gh/yoursmile66/TVBox@main/XC.json | 非 JSON（待验证） |
-| 12 | 小盒子4K | http://xhztv.top/4k.json | 非 JSON（待验证） |
-| 13 | FongMi线路 | https://cdn.jsdelivr.net/gh/gaotianliuyun/gao@master/0827.json | 可读（33 站） |
-| 14 | 肥猫 | http://肥猫.net/tv | 可读（39 站） |
-| 15 | 饭太硬 | http://fty.xxooo.cf/tv | 不可达（连接重置） |
-| 16 | 欧歌4K | http://tv.nxog.top/m/ | HTTP 403 |
-| 17 | 王二小 | http://tvbox.xn--4kq62z5rby2qupq9ub.top/ | 非 JSON（待验证） |
-| 18 | Ray（dxawi） | https://raw.githubusercontent.com/dxawi/0/main/0.json | 可读（48 站） |
-| 19 | 王二小（维护镜像） | https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/wangerxiao.json | 可读（63 站） |
-| 20 | 544609136 精简仓（54站） | https://raw.githubusercontent.com/544609136/tvbox/main/cur/vod_slim.json | 可读（54 站） |
-| 21 | 544609136 完整仓（147站） | https://raw.githubusercontent.com/544609136/tvbox/main/cur/vod_full.json | 可读（147 站） |
-| 22 | 聚合精选 ofind（222站） | https://ofind.cn/juhe-subhub/tvbox.json | 可读（222 站） |
-| 23 | TVBox-Hub 精选（50站） | https://raw.githubusercontent.com/sylvan97/tvbox-hub/main/dist/index.json | 可读（50 站） |
-
-「非 JSON」表示返回内容不是可解析 JSON（历史上分别出现过编码载荷、带注释/未转义换行的 JSON、HTML 页面等情况），需要在客户端实测，**不代表永久失效**。「不可达」与「HTTP 403」是当次网络观察，可能是临时故障、地区限制或上游变更。
-
-已验证：配置 HTTP 200、JSON 可解析、站点条目齐全、spider 可下载（`ofind` 使用相对路径 `spider_special.jar`，已按配置地址解析后验证）；**未执行扩展、未验证播放**。证据见 [source-checks/2026-11-01-vod.json](source-checks/2026-11-01-vod.json)。这四个都是第三方聚合/精选仓，内容可能与现有入口重复，站点数不等于可播放数量。
+| 1 | Qist 自用点播 | https://ghproxy.net/https://raw.githubusercontent.com/qist/tvbox/master/jsm.json | 可读（162 站） |
+| 2 | 饭太硬（Qist维护） | https://ghproxy.net/https://raw.githubusercontent.com/qist/tvbox/master/fty.json | 可读（50 站） |
+| 3 | 潇洒（Qist维护） | https://ghproxy.net/https://raw.githubusercontent.com/qist/tvbox/master/xiaosa/api.json | 可读（116 站） |
+| 4 | 高天流云 PG | https://ghproxy.net/https://raw.githubusercontent.com/gaotianliuyun/gao/master/0825.json | 可读（135 站） |
+| 5 | 高天流云 FTY | https://ghproxy.net/https://raw.githubusercontent.com/gaotianliuyun/gao/master/0826.json | 可读（51 站） |
+| 6 | Gaoops点播 | https://ghproxy.net/https://raw.githubusercontent.com/mrgaoshuiquan/tvbox-config/main/tvbox.json | 可读（52 站） |
+| 7 | 我的直播配置（无点播） | https://ghproxy.net/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/config.json | 直播配置（0 点播站点） |
+| 8 | 高天流云-js | https://ghproxy.net/https://raw.githubusercontent.com/gaotianliuyun/gao/master/js.json | 可读（298 站） |
+| 9 | 高天流云-XYQ | https://ghproxy.net/https://raw.githubusercontent.com/gaotianliuyun/gao/master/XYQ.json | 编码载荷（待验证，47 站，spider 可下载） |
+| 10 | 香雅情 | https://ghproxy.net/https://raw.githubusercontent.com/xyq254245/xyqonlinerule/main/XYQTVBox.json | 编码载荷（待验证，48 站，spider 可下载） |
+| 11 | 南风 | https://ghproxy.net/https://raw.githubusercontent.com/yoursmile66/TVBox/main/XC.json | 编码载荷（待验证，spider 可下载） |
+| 12 | 小盒子4K | http://xhztv.top/4k.json | 非 JSON 文本（待验证，30 KB） |
+| 13 | FongMi线路 | https://ghproxy.net/https://raw.githubusercontent.com/gaotianliuyun/gao/master/0827.json | 可读（33 站） |
+| 14 | Ray（dxawi） | https://ghproxy.net/https://raw.githubusercontent.com/dxawi/0/main/0.json | 可读（48 站） |
+| 15 | 王二小（维护镜像） | https://ghproxy.net/https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/wangerxiao.json | 可读（100 站） |
+| 16 | 544609136 精简仓（54站） | https://ghproxy.net/https://raw.githubusercontent.com/544609136/tvbox/main/cur/vod_slim.json | 可读（54 站） |
+| 17 | 544609136 完整仓（147站） | https://ghproxy.net/https://raw.githubusercontent.com/544609136/tvbox/main/cur/vod_full.json | 可读（147 站） |
+| 18 | 聚合精选 ofind（222站） | https://ofind.cn/juhe-subhub/tvbox.json | 可读（222 站） |
+| 19 | TVBox-Hub 精选（50站） | https://ghproxy.net/https://raw.githubusercontent.com/sylvan97/tvbox-hub/main/dist/index.json | 可读（50 站） |
+| 20 | 544609136 合并仓（777站，含网盘/P2P） | https://ghproxy.net/https://raw.githubusercontent.com/544609136/tvbox/main/cur/combo.json | 可读（777 站，spider 约 18 MB） |
+| 21 | Qist 综合仓（163站） | https://ghproxy.net/https://raw.githubusercontent.com/qist/tvbox/master/dianshi.json | 可读（163 站） |
+| 22 | Qist 0821 整合仓（86站） | https://ghproxy.net/https://raw.githubusercontent.com/qist/tvbox/master/0821.json | 可读（86 站） |
+| 23 | Jinenge 内置源（59站） | https://jinenge.us.kg/app/tvbox/tvbox.json | 可读（59 站，自带直播与 jar） |
+| 24 | TVBox-Hub 轻量（20站） | https://ghproxy.net/https://raw.githubusercontent.com/sylvan97/tvbox-hub/main/dist/lite.json | 可读（20 站） |
 
 ## 自有媒体、JAR、编码
 
