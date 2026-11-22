@@ -30,6 +30,21 @@ https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi.jso
 https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/config.json
 ```
 
+### 🚄 国内直连版（不用 GitHub 代理）
+
+`multi-cn.json` 是给国内网络、直连 `raw.githubusercontent.com` 不通、代理也不稳的朋友准备的。里面 8 个入口**全部走 jsDelivr 或来源自有域名**，不经过任何 GitHub 代理站。因为 jsDelivr 会拒绝 `.jar`，这个版本只收依赖文件是 `.txt` 或放在第三方域名的源，站数写在各条名字里。
+
+```text
+https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/multi-cn.json
+```
+
+`cdn.jsdelivr.net` 打不开时，换同样内容的备用节点：
+
+```text
+https://gcore.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/multi-cn.json
+https://jsd.onmicrosoft.cn/gh/tarynwyj/yingshicang-confi-self@main/multi-cn.json
+```
+
 另外两个入口，按需使用：
 
 - 连接测试：`https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/config-test.json`（里面是 Apple 的 HLS 测试视频，用来确认客户端能不能正常加载配置）

@@ -96,6 +96,7 @@ Jellyfin / Emby / Alist 尚未接入：需要真实地址、应用版本和受�
 - 新增 5 个当日实测可读、`spider` 可下载的来源：544609136 合并仓（777 站）、Qist 综合仓 163 站、Qist 0821 整合仓 86 站、Jinenge 内置源 59 站（自带直播与 jar）、TVBox-Hub 轻量 20 站。`multi.json` 23 → 24 项，`multi-vod.json` 8 → 11 项。
 - 验证：24 条地址逐条 HTTP 200；`sites` 计数与 `spider` 下载（含 18 MB 的 `spider_special.jar`）通过；`check_sources.py` 结构校验退出 0；回归测试 55 项通过。**未执行 JAR、未验证播放**。
 - 注意：`ghproxy.net` 首次拉取大文件可能较慢或偶发 5xx，重试即可；jsDelivr 对 `@分支` 有缓存（数小时至 12 小时），本仓库自用 CDN 地址可能延迟可见。
+- 新增 `multi-cn.json`（国内直连版，8 项）：客户端所在网络直连 raw 不通、且 `ghproxy.net` 也被阻断时的替代清单。全部条目走 jsDelivr 或来源自有域名，不依赖 GitHub 代理；jsDelivr 拒绝 `.jar`，故只收 `.txt` 依赖或非 GitHub 托管的来源。导入地址用 `cdn.jsdelivr.net`、`gcore.jsdelivr.net` 或 `jsd.onmicrosoft.cn` 三个节点，任一可用即可。
 
 ### 2026-11-01：多仓新增 4 个单仓（19 → 23）
 

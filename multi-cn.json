@@ -1,0 +1,36 @@
+{
+  "urls": [
+    {
+      "name": "Qist 饭太硬（50站·txt 扩展）",
+      "url": "https://cdn.jsdelivr.net/gh/qist/tvbox@master/fty.json"
+    },
+    {
+      "name": "高天流云 0826（51站·txt 扩展）",
+      "url": "https://cdn.jsdelivr.net/gh/gaotianliuyun/gao@master/0826.json"
+    },
+    {
+      "name": "高天流云 0821（86站·txt 扩展）",
+      "url": "https://cdn.jsdelivr.net/gh/gaotianliuyun/gao@master/0821.json"
+    },
+    {
+      "name": "TVBox-Hub 精选（50站）",
+      "url": "https://cdn.jsdelivr.net/gh/sylvan97/tvbox-hub@main/dist/index.json"
+    },
+    {
+      "name": "TVBox-Hub 轻量（20站）",
+      "url": "https://cdn.jsdelivr.net/gh/sylvan97/tvbox-hub@main/dist/lite.json"
+    },
+    {
+      "name": "王二小（维护镜像·100站）",
+      "url": "https://cdn.jsdelivr.net/gh/Lightconer/tvbox-ysc-config@main/output/wangerxiao.json"
+    },
+    {
+      "name": "聚合精选 ofind（222站）",
+      "url": "https://ofind.cn/juhe-subhub/tvbox.json"
+    },
+    {
+      "name": "Jinenge 内置源（59站）",
+      "url": "https://jinenge.us.kg/app/tvbox/tvbox.json"
+    }
+  ]
+}
