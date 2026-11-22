@@ -96,6 +96,7 @@ Jellyfin / Emby / Alist 尚未接入：需要真实地址、应用版本和受�
 - 新增 5 个当日实测可读、`spider` 可下载的来源：544609136 合并仓（777 站）、Qist 综合仓 163 站、Qist 0821 整合仓 86 站、Jinenge 内置源 59 站（自带直播与 jar）、TVBox-Hub 轻量 20 站。`multi.json` 23 → 24 项，`multi-vod.json` 8 → 11 项。
 - 验证：24 条地址逐条 HTTP 200；`sites` 计数与 `spider` 下载（含 18 MB 的 `spider_special.jar`）通过；`check_sources.py` 结构校验退出 0；回归测试 55 项通过。**未执行 JAR、未验证播放**。
 - 注意：`ghproxy.net` 首次拉取大文件可能较慢或偶发 5xx，重试即可；jsDelivr 对 `@分支` 有缓存（数小时至 12 小时），本仓库自用 CDN 地址可能延迟可见。
+- 通道统一（2026-11-22）：`multi.json` 与 `multi-vod.json` 的 GitHub 源按依赖分流——`.jar` 走 `gh-proxy.org`，`.txt`/无依赖走 `cdn.jsdelivr.net`，第三方域名直连；原因是 jsDelivr 对所有 `.jar` 返回 403，而 `ghproxy.net` 在国内多数网络不可达。`multi-cn.json` 保持零代理，`config.json` 直播清单不动。24 条与 11 条配置当日全部 HTTP 200，`.jar` 依赖逐一 HEAD 200（含 26 MB 的 `spider_special.jar`）。
 - `multi-cn.json` 排序规则：按实测加载耗时（配置 + 依赖文件，各取 2 次中位数）从快到慢排列，2026-11-22 实测最快 0.22 秒（摸鱼）、最慢 47 秒（宝盒，依赖文件 911 KB 但源站极慢）；排序不代表来源质量，只影响首次加载体验。
 - 新增并扩充 `multi-cn.json`（国内直连版，8 → 22 项）：客户端所在网络直连 raw 不通、`ghproxy.net` 也被阻断时的替代清单。全部条目走 jsDelivr 或来源自有域名，不依赖 GitHub 代理；jsDelivr 拒绝 `.jar`，故只收 `.txt` 依赖或非 GitHub 托管的来源。导入地址用 `cdn.jsdelivr.net`、`gcore.jsdelivr.net` 或 `jsd.onmicrosoft.cn` 三个节点（所有者实测 `cdn.jsdelivr.net` 可用）。扩充时探测 79 条候选（来源：`thevip001/tvbox-agg` 接口清单 + GitHub 搜到的活跃仓库），19 条通过结构/内容/spider 三关，去重后并入 22 条；22 条复核 `config 200` + `spider 200`。
 

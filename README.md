@@ -16,7 +16,9 @@ https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi-vod
 
 ### 📦 完整合集
 
-`multi.json` 里包含 24 个仓库入口，保留了之前收集的老仓库，也加入了一些新来源。想自己多试几个仓库，可以选这个。失效的老入口（肥猫、饭太硬旧域名、欧歌4K、王二小网页入口）已经清掉。
+`multi.json` 里包含 24 个仓库入口，保留了之前收集的老仓库，也加入了一些新来源。失效的老入口（肥猫、饭太硬旧域名、欧歌4K、王二小网页入口）已经清掉。
+
+**通道规则（三个多仓文件统一）**：每条源按其依赖自动分流——依赖是 GitHub 上的 `.jar` 走 `gh-proxy.org`（jsDelivr 会拒绝 `.jar`），依赖是 `.txt` 或无外部依赖的走 `cdn.jsdelivr.net`，架在国内/第三方域名的直连。所以导入地址用下面任意一个都行，源本身不再依赖某一个代理站。当前分布：`gh-proxy.org` 13 条、`jsDelivr` 8 条、自有域名 3 条。
 
 ```text
 https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi.json

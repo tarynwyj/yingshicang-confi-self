@@ -21,7 +21,9 @@
 
 2026-11-22：① 原 15 条 `gh-proxy.com` 代理地址全部返回 HTTP 403（`Access to proxy rules is forbidden on this hostname: gh-proxy.com`，任意目标仓库同样如此，站点首页仍正常打开），该代理已停止转发，配置里的地址统一改走 `ghproxy.net` 代理前缀；② 删除实测长期失效的 4 个入口：肥猫（Cloudflare 521）、饭太硬（旧域名 `fty.xxooo.cf` 无法连接）、欧歌4K（HTTP 403）、王二小（网页入口 HTTP 504，原 `raw` 镜像入口保留）；③ 新增 5 个当日实测可读、spider 可下载的来源。上游 owner/repo/分支/路径不变，只调整代理前缀与条目集合。
 
-判定口径：配置 HTTP 200、JSON 可解析（含注释/尾逗号容忍）、`sites` 条目数、`spider` 可下载；**未执行 JAR、未验证播放**。`ghproxy.net` 首次拉取大文件可能较慢或偶发 5xx，重试即可，不代表来源失效。
+判定口径：配置 HTTP 200、JSON 可解析（含注释/尾逗号容忍）、`sites` 条目数、`spider` 可下载；**未执行 JAR、未验证播放**。`gh-proxy.org` 首次拉取大文件可能较慢，重试即可，不代表来源失效。
+
+通道统一规则（2026-11-22）：`multi.json`（24 条）与 `multi-vod.json`（11 条，`multi.json` 的子集）按依赖分流——GitHub `.jar` 依赖走 `gh-proxy.org`，`.txt`/无依赖走 `cdn.jsdelivr.net`，第三方域名直连；分布为 gh-proxy.org 13 条、jsDelivr 8 条、自有域名 3 条。`multi-cn.json`（22 条）保持零 GitHub 代理：仅 jsDelivr（6 条）与自有域名（16 条），按实测加载耗时排序。`config.json`/`config-test.json` 的直播清单仍全部走 jsDelivr。三个多仓文件的定位：完整合集、点播精选、代理全挂时的兜底版。
 
 另有 `multi-cn.json`（国内直连版，22 个入口，按 `sites` 数排序）：2026-11-22 新增并扩充，供直连 `raw.githubusercontent.com` 不通、且 `ghproxy.net` 也被网络阻断的客户端使用。该清单不经过任何 GitHub 代理，全部走 jsDelivr 或来源自有域名；因 jsDelivr 拒绝 `.jar` 扩展，只收录依赖文件为 `.txt` 或非 GitHub 托管的来源。候选来自 `thevip001/tvbox-agg` 的接口清单与 GitHub 搜索，共探测 79 条地址，19 条通过（配置 200、JSON 可解析、`sites` ≥ 10、`spider` 可下载），与原有 jsDelivr 可用源合并去重后为 22 条；22 条当日复核全部为 `config 200` + `spider 200`。其中 `kstore.space`/`kstore.vip`、`jihulab.com`、`serv00.net`、`xhztv.top`、`iptv365.org` 等为第三方或个人线路，随时可能失效，失效属正常，不等于该接口永久不可用。
 
