@@ -32,13 +32,17 @@ https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/config.js
 
 ### 🚄 国内直连版（不用 GitHub 代理）
 
-`multi-cn.json` 是给国内网络、直连 `raw.githubusercontent.com` 不通、GitHub 加速站也不稳的朋友准备的。共 **22 个入口，全部走 jsDelivr 或来源自有域名**，不经过任何 GitHub 代理站，按站数从多到少排。
+`multi-cn.json` 是给国内网络、直连 `raw.githubusercontent.com` 不通、GitHub 加速站也不稳的朋友准备的。共 **22 个入口，全部走 jsDelivr 或来源自有域名**，不经过任何 GitHub 代理站。
+
+顺序是**实测加载速度**（拉配置 + 拉依赖文件的总耗时，2026-11-22 测），前面最快：前 6 条都在 0.5 秒内，`摸鱼`、`王二小`、`嗷呜` 最快。末尾的 `幸福年年`（依赖 8 秒）和 `宝盒`（依赖 45 秒）能用但慢，排在最后当备用。
 
 因为 jsDelivr 会拒绝 `.jar` 文件，这个版本只收两类源：依赖文件是 `.txt` 的（Qist、高天流云、TVBox-Hub），以及本身架在国内/第三方域名上的（摸鱼、clun、王二小、香雅情等）。站数写在各条名字里，只是配置里登记的站点数量，不等于都能播。
 
 ```text
 https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/multi-cn.json
 ```
+
+jsDelivr 对分支有缓存（几小时到半天），刚更新完可能还是旧内容；要立刻拿最新版，把 `@main` 换成最近一次提交的哈希，例如 `@d252616`。
 
 `cdn.jsdelivr.net` 打不开时，换同样内容的备用节点：
 
