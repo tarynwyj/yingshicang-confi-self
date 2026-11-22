@@ -23,7 +23,7 @@
 
 判定口径：配置 HTTP 200、JSON 可解析（含注释/尾逗号容忍）、`sites` 条目数、`spider` 可下载；**未执行 JAR、未验证播放**。`ghproxy.net` 首次拉取大文件可能较慢或偶发 5xx，重试即可，不代表来源失效。
 
-另有 `multi-cn.json`（国内直连版，8 个入口）：2026-11-22 新增，供直连 `raw.githubusercontent.com` 不通、且 `ghproxy.net` 也被网络阻断的客户端使用。该清单不经过任何 GitHub 代理，全部走 jsDelivr 或来源自有域名；因 jsDelivr 拒绝 `.jar` 扩展，只收录依赖文件为 `.txt` 或非 GitHub 托管的来源（Qist fty、高天流云 0821/0826、TVBox-Hub 精选/轻量、王二小维护镜像、ofind、Jinenge），逐条验证配置与依赖文件均 HTTP 200。
+另有 `multi-cn.json`（国内直连版，22 个入口，按 `sites` 数排序）：2026-11-22 新增并扩充，供直连 `raw.githubusercontent.com` 不通、且 `ghproxy.net` 也被网络阻断的客户端使用。该清单不经过任何 GitHub 代理，全部走 jsDelivr 或来源自有域名；因 jsDelivr 拒绝 `.jar` 扩展，只收录依赖文件为 `.txt` 或非 GitHub 托管的来源。候选来自 `thevip001/tvbox-agg` 的接口清单与 GitHub 搜索，共探测 79 条地址，19 条通过（配置 200、JSON 可解析、`sites` ≥ 10、`spider` 可下载），与原有 jsDelivr 可用源合并去重后为 22 条；22 条当日复核全部为 `config 200` + `spider 200`。其中 `kstore.space`/`kstore.vip`、`jihulab.com`、`serv00.net`、`xhztv.top`、`iptv365.org` 等为第三方或个人线路，随时可能失效，失效属正常，不等于该接口永久不可用。
 
 | # | 入口 | 地址 | 2026-11-22 观察 |
 |---|---|---|---|

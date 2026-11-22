@@ -32,7 +32,9 @@ https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/config.js
 
 ### 🚄 国内直连版（不用 GitHub 代理）
 
-`multi-cn.json` 是给国内网络、直连 `raw.githubusercontent.com` 不通、代理也不稳的朋友准备的。里面 8 个入口**全部走 jsDelivr 或来源自有域名**，不经过任何 GitHub 代理站。因为 jsDelivr 会拒绝 `.jar`，这个版本只收依赖文件是 `.txt` 或放在第三方域名的源，站数写在各条名字里。
+`multi-cn.json` 是给国内网络、直连 `raw.githubusercontent.com` 不通、GitHub 加速站也不稳的朋友准备的。共 **22 个入口，全部走 jsDelivr 或来源自有域名**，不经过任何 GitHub 代理站，按站数从多到少排。
+
+因为 jsDelivr 会拒绝 `.jar` 文件，这个版本只收两类源：依赖文件是 `.txt` 的（Qist、高天流云、TVBox-Hub），以及本身架在国内/第三方域名上的（摸鱼、clun、王二小、香雅情等）。站数写在各条名字里，只是配置里登记的站点数量，不等于都能播。
 
 ```text
 https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/multi-cn.json
