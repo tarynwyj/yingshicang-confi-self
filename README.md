@@ -58,7 +58,7 @@ https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/multi-vod.json
 **点播合集代理地址：**
 
 ```text
-https://gh-proxy.com/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi-vod.json
+https://ghproxy.net/https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/multi-vod.json
 ```
 
 其他文件也可以这样替换：把 `https://raw.githubusercontent.com/tarynwyj/yingshicang-confi-self/main/` 换成 `https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/`。备用地址也可能受网络或缓存影响。

@@ -19,21 +19,23 @@
 
 `multi.json` 共 23 个入口（2026-11-01 追加 4 个单仓；历史 19 个入口全部保留，未删除、未替换）。`multi-vod.json` 为 8 个点播来源的独立清单：10 月 1 日加入 6 个，10 月 9 日加入 Ray 和王二小维护镜像。历史第三方地址保持原样，自有直播配置已明确“无点播”。不根据一次检测删除或替换第三方域名。完整入口清单见下文「完整多仓入口」。
 
+2026-11-22：原 15 条 `gh-proxy.com` 代理地址全部返回 HTTP 403（`Access to proxy rules is forbidden on this hostname: gh-proxy.com`，任意目标仓库同样如此，站点首页仍正常打开），该代理已停止转发。**只替换了代理前缀**，改为等价 jsDelivr 地址（`cdn.jsdelivr.net/gh/<owner>/<repo>@<branch>/<path>`），上游仓库、分支与文件路径一律未改；表内“2026-11-01 观察”列仍为当次原始记录，不代表新地址的当前状态。新地址当日实测：15 条全部 HTTP 200，`multi-vod.json` 8/8、`multi.json` 19/23 可读；其余 4 条（肥猫 521、饭太硬、欧歌、王二小）为原有多仓失效入口，与本次代理故障无关。
+
 | # | 入口 | 地址 | 2026-11-01 观察 |
 |---|---|---|---|
-| 1 | Qist 自用点播 | https://gh-proxy.com/https://raw.githubusercontent.com/qist/tvbox/master/jsm.json | 可读（156 站） |
-| 2 | 饭太硬（Qist维护） | https://gh-proxy.com/https://raw.githubusercontent.com/qist/tvbox/master/fty.json | 可读（48 站） |
-| 3 | 潇洒（Qist维护） | https://gh-proxy.com/https://raw.githubusercontent.com/qist/tvbox/master/xiaosa/api.json | 可读（110 站） |
+| 1 | Qist 自用点播 | https://cdn.jsdelivr.net/gh/qist/tvbox@master/jsm.json | 可读（156 站） |
+| 2 | 饭太硬（Qist维护） | https://cdn.jsdelivr.net/gh/qist/tvbox@master/fty.json | 可读（48 站） |
+| 3 | 潇洒（Qist维护） | https://cdn.jsdelivr.net/gh/qist/tvbox@master/xiaosa/api.json | 可读（110 站） |
 | 4 | 高天流云 PG | https://raw.githubusercontent.com/gaotianliuyun/gao/master/0825.json | 可读（135 站） |
-| 5 | 高天流云 FTY | https://gh-proxy.com/https://raw.githubusercontent.com/gaotianliuyun/gao/master/0826.json | 可读（51 站） |
-| 6 | Gaoops点播 | https://gh-proxy.com/https://raw.githubusercontent.com/mrgaoshuiquan/tvbox-config/main/tvbox.json | 可读（52 站） |
+| 5 | 高天流云 FTY | https://cdn.jsdelivr.net/gh/gaotianliuyun/gao@master/0826.json | 可读（51 站） |
+| 6 | Gaoops点播 | https://cdn.jsdelivr.net/gh/mrgaoshuiquan/tvbox-config@main/tvbox.json | 可读（52 站） |
 | 7 | 我的直播配置（无点播） | https://cdn.jsdelivr.net/gh/tarynwyj/yingshicang-confi-self@main/config.json | 直播配置（0 点播站点） |
-| 8 | 高天流云-js | https://gh-proxy.com/raw.githubusercontent.com/gaotianliuyun/gao/master/js.json | 可读（298 站） |
-| 9 | 高天流云-XYQ | https://gh-proxy.com/raw.githubusercontent.com/gaotianliuyun/gao/master/XYQ.json | 非 JSON（待验证） |
-| 10 | 香雅情 | https://gh-proxy.com/https://raw.githubusercontent.com/xyq254245/xyqonlinerule/main/XYQTVBox.json | 非 JSON（待验证） |
-| 11 | 南风 | https://gh-proxy.com/https://raw.githubusercontent.com/yoursmile66/TVBox/main/XC.json | 非 JSON（待验证） |
+| 8 | 高天流云-js | https://cdn.jsdelivr.net/gh/gaotianliuyun/gao@master/js.json | 可读（298 站） |
+| 9 | 高天流云-XYQ | https://cdn.jsdelivr.net/gh/gaotianliuyun/gao@master/XYQ.json | 非 JSON（待验证） |
+| 10 | 香雅情 | https://cdn.jsdelivr.net/gh/xyq254245/xyqonlinerule@main/XYQTVBox.json | 非 JSON（待验证） |
+| 11 | 南风 | https://cdn.jsdelivr.net/gh/yoursmile66/TVBox@main/XC.json | 非 JSON（待验证） |
 | 12 | 小盒子4K | http://xhztv.top/4k.json | 非 JSON（待验证） |
-| 13 | FongMi线路 | https://gh-proxy.com/raw.githubusercontent.com/gaotianliuyun/gao/master/0827.json | 可读（33 站） |
+| 13 | FongMi线路 | https://cdn.jsdelivr.net/gh/gaotianliuyun/gao@master/0827.json | 可读（33 站） |
 | 14 | 肥猫 | http://肥猫.net/tv | 可读（39 站） |
 | 15 | 饭太硬 | http://fty.xxooo.cf/tv | 不可达（连接重置） |
 | 16 | 欧歌4K | http://tv.nxog.top/m/ | HTTP 403 |
